@@ -22,9 +22,9 @@ public class CheckConfig {
     //the UrlBolt parallelism
     public int urlBoltParallel = 1;
     //the DownloadBolt parallelism
-    public int downloadBoltParallel = 5;
+    public int downloadBoltParallel = 1;
     //the ReturnBolt parallelism
-    public int returnBoltParallel = 3;
+    public int returnBoltParallel = 1;
 
     //the authentication cache size
     public int authCacheSize = 100;

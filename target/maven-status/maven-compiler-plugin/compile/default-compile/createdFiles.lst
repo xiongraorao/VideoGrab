@@ -3,6 +3,7 @@ com/persist/util/tool/analysis/PictureRecorderImpl.class
 com/persist/util/tool/analysis/IPictureRecorder.class
 com/persist/kafka/MethodInterface.class
 com/persist/util/tool/grab/VideoNotifierImpl.class
+com/xrr/test/HBaseTest.class
 com/persist/test/JsonTest.class
 com/persist/bean/analysis/AnalysisConfig.class
 com/persist/GrabThread$5.class
