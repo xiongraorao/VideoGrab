@@ -1,0 +1,9 @@
+{
+"function":"image-check",
+"so":"CalculatorImpl",
+"drpcSpoutParallel": 1,
+"imageBoltParallel": 1,
+"returnBoltParallel": 1,
+"workerNum": 1,
+"test_fields":"raorao"
+}
