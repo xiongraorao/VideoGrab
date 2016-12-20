@@ -118,8 +118,7 @@
 			            <compilerArguments>  
 			                  <verbose />  
 			              <bootclasspath>${java.home}/lib/rt.jar:${java.home}/lib/jce.jar</bootclasspath>  
-			        </compilerArguments>  
-			        
+			        </compilerArguments>     
 			    </configuration>  
 			</plugin> 
 	    </plugins>

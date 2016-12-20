@@ -10,6 +10,7 @@
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/util/tool/analysis/CalculatorImpl.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/util/helper/HDFSHelper.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/util/tool/analysis/Predict.java
+/home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/test/Hello.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/util/tool/image/IRecorder.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/util/tool/grab/SimpleGrabberImpl.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/ImageQuery.java
@@ -22,6 +23,7 @@
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/VideoAnalyzer.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/bean/analysis/CalculateInfo.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/util/helper/BufferedImageHelper.java
+/home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/test/HDFSTest.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/bean/analysis/PictureKey.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/kafka/KafkaNewProducer.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/test/ImageTest.java

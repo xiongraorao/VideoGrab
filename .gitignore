@@ -8,7 +8,7 @@
 *@*
 
 # 去掉zookeeper日志文件
-zookeeper.out
+/zookeeper.out
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
