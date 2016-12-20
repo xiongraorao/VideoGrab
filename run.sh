@@ -15,6 +15,10 @@ elif [[ $1 == "-g" ]]
 then
 	echo "start GrabTopology named" $2
 	storm jar target/ever-1.0-SNAPSHOT.jar com.persist.VideoGrabber grabber_config.json $2
+elif [[ $1 == "-vg" ]]
+then
+	echo "start VideoGrabTopology named" $2
+	storm jar target/ever-1.0-SNAPSHOT.jar com.xrr.VideoGrab videograb_config.json $2
 elif [[ $1 == "-ic" ]]
 then
 	echo "start ImageCheck ServiceTopology named" $2

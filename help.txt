@@ -18,3 +18,18 @@
                 </execution>
             </executions>
 </plugin>
+
+kafkamessage:
+Video Grab:
+
+添加抓取命令
+{"url":"/home/ubuntu/dogvideo.mp4","dir":"/home/ubuntu/grabbedImages","cmd":"add"}
+
+{"url":"rtmp://live.hkstv.hk.lxdns.com/live/hks","dir":"/home/ubuntu/grabbedImages","cmd":"add"}
+
+取消
+{"url":"/home/ubuntu/dogvideo.mp4","dir":"/home/ubuntu/grabbedImages","cmd":"quit"}
+
+{"url":"rtmp://live.hkstv.hk.lxdns.com/live/hks","dir":"/home/ubuntu/grabbedImages","cmd":"quit"}
+
+

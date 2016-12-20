@@ -10,6 +10,7 @@ com/persist/GrabThread$5.class
 com/persist/util/tool/analysis/CalculatorImpl.class
 com/persist/GrabThread.class
 com/persist/test/BufferedImageTest.class
+com/xrr/bolts/SegmentBolt.class
 com/persist/kafka/KafkaObjectConsumer.class
 com/persist/bolts/analysis/PictureRecorderBolt.class
 com/persist/util/helper/ImageHelper.class
@@ -53,6 +54,7 @@ com/persist/util/tool/analysis/PictureRecorderMultipleImpl.class
 com/persist/util/helper/HDFSHelper.class
 com/persist/bolts/analysis/PictureNotifierBolt.class
 com/persist/util/tool/image/IRecorder.class
+com/xrr/bolts/SaveImage.class
 com/persist/bolts/grab/ResolveBolt.class
 com/persist/test/ImageTest.class
 com/persist/test/PpmTest.class
@@ -65,6 +67,7 @@ com/persist/util/tool/image/AuthImpl$1.class
 com/persist/test/HbaseTest.class
 com/persist/ImageQuery.class
 com/persist/bolts/image/ReturnBolt.class
+com/xrr/VideoGrab.class
 com/persist/test/RedisTest.class
 com/persist/kafka/KafkaSerializer.class
 com/xrr/test/Hello.class
@@ -72,6 +75,7 @@ com/persist/util/tool/grab/SimpleGrabberImpl.class
 com/persist/util/tool/analysis/Predict.class
 com/persist/GrabThread$1.class
 com/persist/test/SoTest.class
+com/xrr/bolts/SaveFeature.class
 com/persist/util/tool/image/IAuth.class
 com/persist/test/FileTest.class
 com/persist/GrabThread$4.class
