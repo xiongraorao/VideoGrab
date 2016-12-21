@@ -1,4 +1,4 @@
-package com.persist;
+package com.xrr;
 
 import com.google.gson.Gson;
 import com.persist.bean.analysis.PictureKey;
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  * grab rtmp and write data to hdfs
  *
  */
-public class GrabThread extends Thread{
+public class VideoGrabThread extends Thread{
 
     private final static String TAG = "Grab";
 
@@ -98,27 +98,28 @@ public class GrabThread extends Thread{
     private Runnable startRunnable = new Runnable() {
         public void run() {
             if(flags[0] && mListener != null)
-                mListener.handleMessage(GrabThread.this, START_TIMEOUT_MSG);
+                mListener.handleMessage(VideoGrabThread.this, START_TIMEOUT_MSG);
         }
     };
     private Runnable grabRunnable = new Runnable() {
         public void run() {
             if(flags[1] && mListener != null)
-                mListener.handleMessage(GrabThread.this, GRAB_TIMEOUT_MSG);
+                mListener.handleMessage(VideoGrabThread.this, GRAB_TIMEOUT_MSG);
         }
     };
     private Runnable restartRunnable = new Runnable() {
         public void run() {
             if(flags[2] && mListener != null)
-                mListener.handleMessage(GrabThread.this, RESTART_TIMEOUT_MSG);
+                mListener.handleMessage(VideoGrabThread.this, RESTART_TIMEOUT_MSG);
         }
     };
 
-    public GrabThread(String url, String dir, IVideoNotifier notifier, String topic, String brokerList, FileLogger logger)
+    public VideoGrabThread(String url, String dir, IVideoNotifier notifier, String topic, String brokerList, FileLogger logger)
     {
         mUrl = url;
         mDir = dir;
         String id = String.valueOf(Math.abs(url.hashCode()));
+        //this line override the mFormat variable, the same url will start in same code
         mFormat = id +"-%05d-%d.png";
         mLogger = logger;
         mHelper = new HDFSHelper(dir);
@@ -215,13 +216,15 @@ public class GrabThread extends Thread{
             double frameRate = mGrabber.getFrameRate();
             failLimit = (int)(frameRate*mFailSeconds);
             sameLimit = (int)(mGrabRate*mFailSeconds);
-            grabStep = (int) (frameRate/mGrabRate);
+            grabStep = (int) (frameRate/mGrabRate);//grabbed frame step
             mNotifier.notify("finish starting, " +
                     "frameRate="+frameRate
+                    +", grabRate="+mGrabRate
                     +", frameLength=" + mGrabber.getLengthInFrames()
                     +", grabStep="+grabStep);
             mLogger.log(mUrl, "finish starting, " +
                     "frameRate="+frameRate
+                    +", grabRate="+mGrabRate
                     +", frameLength="+mGrabber.getLengthInFrames()
                     +", grabStep="+grabStep);
             //start grabbing frames
@@ -316,6 +319,7 @@ public class GrabThread extends Thread{
                     continue;
                 }
 
+                //add segment algorithm in here
                 //write frame
                 mNotifier.notify("grab frame " + mCount+"/"+mIndex);
                 mLogger.log(mUrl, "grab frame " + mCount+"/"+mIndex);
@@ -325,11 +329,15 @@ public class GrabThread extends Thread{
                     //resize image
                     oldW = image.width();
                     oldH = image.height();
+                    
                     bi = new BufferedImage(oldW, oldH, BufferedImage.TYPE_3BYTE_BGR);
                     bi.getGraphics().drawImage(mImageConverter.getBufferedImage(frame), 0, 0, oldW, oldH, null);
 //                    bi = ImageHelper.resize(bi, mWidth, mHeight);
                     bi = BufferedImageHelper.resize(bi, mWidth, mHeight);
-
+                    
+                    //segement test, segement the center 100*100 pixel image
+                    bi=BufferedImageHelper.segmentTest(bi, "png", mWidth/4, mHeight/4, mWidth/2, mHeight/2);
+                                       
                     mLogger.log(mUrl, "size: "+bi.getWidth()+"*"+bi.getHeight());
                     //write image to byte array output stream
                     baos = new ByteArrayOutputStream();
@@ -665,7 +673,7 @@ public class GrabThread extends Thread{
         private String STOP;
         private boolean run;
 
-        private GrabThread grabThread;
+        private VideoGrabThread grabThread;
 
         private MessageListener listener;
 
@@ -676,7 +684,7 @@ public class GrabThread extends Thread{
             this.run = true;
         }
 
-        public void setGrabThread(GrabThread t)
+        public void setGrabThread(VideoGrabThread t)
         {
             grabThread = t;
         }
@@ -725,12 +733,12 @@ public class GrabThread extends Thread{
      * args[7] file name format [optional]
      * */
 
-    static GrabThread createGrabThread(String url, String dir, IVideoNotifier notifier,
+    static VideoGrabThread createGrabThread(String url, String dir, IVideoNotifier notifier,
                                        String topic, String brokerList, FileLogger logger,
                                        double rate, int failSeconds, long startTimeout, long grabTimeout,
                                        long restartTimeout, MessageListener listener, ScheduledExecutorService service)
     {
-        GrabThread grabThread = new GrabThread(url, dir, notifier, topic, brokerList, logger);
+        VideoGrabThread grabThread = new VideoGrabThread(url, dir, notifier, topic, brokerList, logger);
         grabThread.setGrabRate(rate);
         grabThread.setFailSeconds(failSeconds);
         grabThread.setStartTimeout(startTimeout);
@@ -855,16 +863,16 @@ public class GrabThread extends Thread{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         final ListenThread listenThread = new ListenThread(reader, VideoInfo.DEL);
 
-        final GrabThread[] threads = new GrabThread[retry];
+        final VideoGrabThread[] threads = new VideoGrabThread[retry];
         //construct grabThread
         final ScheduledExecutorService service = new ScheduledThreadPoolExecutor(5);
         final MessageListener listener = new MessageListener()
         {
             public void handleMessage(Thread thread, String msg)
             {
-                if (thread instanceof GrabThread)
+                if (thread instanceof VideoGrabThread)
                 {
-                    GrabThread t = (GrabThread) thread;
+                    VideoGrabThread t = (VideoGrabThread) thread;
                     //send message to report
                     if (START_TIMEOUT_MSG.equals(msg)) {
                         logger.log(url, "Start timeout "+t.mStartTimeout+".You'd better destroy the task, then start a new task.");
@@ -924,9 +932,9 @@ public class GrabThread extends Thread{
         listenThread.setGrabThread(threads[0]);
         listenThread.setListener(new MessageListener() {
             public void handleMessage(Thread thread, String msg) {
-                if(thread != null && thread instanceof GrabThread)
+                if(thread != null && thread instanceof VideoGrabThread)
                 {
-                    GrabThread t = (GrabThread)thread;
+                    VideoGrabThread t = (VideoGrabThread)thread;
                     if (msg.equals(VideoInfo.DEL)) {
                         t.stopGrab();//quit grab thread
                     } else if (msg.equals(VideoInfo.PAUSE)) {

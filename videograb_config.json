@@ -4,7 +4,7 @@
 "grabBoltParallel": 1,
 "grabLimit": 3,
 "cmd_old": "java -Djava.ext.dirs=$STORM_HOME/lib/  -cp $STORM_HOME/ever-1.0-SNAPSHOT.jar com.persist.GrabThread ",
-"cmd": "storm jar target/ever-1.0-SNAPSHOT.jar com.persist.GrabThread ",
+"cmd": "storm jar target/ever-1.0-SNAPSHOT.jar com.xrr.VideoGrabThread ",
 "zks_old": "192.168.0.189:2181",
 "zks": "127.0.0.1:2181",
 "topic_old": "topic-capture-image",
@@ -24,5 +24,5 @@
 "nameFormat": "frame-%05d-%d.png",
 "log": "video_log",
 "workerNum":1,
-"frameRate":5
+"frameRate":0.2
 }

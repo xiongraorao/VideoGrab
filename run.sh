@@ -31,6 +31,7 @@ elif [[ $1 == "-rebuild" ]]
 then	echo "------rebuild this project..."
 	mvn clean install -DskipTests=true
 	mvn compile
+	mvn package
 elif [[ $1 == "-pack" ]]
 then
 	echo "------pack this project to jar..."

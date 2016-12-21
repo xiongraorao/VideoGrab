@@ -50,6 +50,7 @@
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/kafka/KafkaDeserializer.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/VideoGrab.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/test/RuntimeTest.java
+/home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/VideoGrabThread.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/bolts/SaveFeature.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/kafka/KafkaSerializer.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/bean/grab/GrabConfig.java

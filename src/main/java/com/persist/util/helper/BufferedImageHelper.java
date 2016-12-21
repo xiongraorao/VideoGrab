@@ -4,7 +4,18 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.awt.Rectangle;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+
+import java.awt.image.*;
 /**
  * Created by taozhiheng on 16-10-20.
  *
@@ -74,5 +85,48 @@ public class BufferedImageHelper {
         AffineTransformOp op = new AffineTransformOp(scaleTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         return op.filter(image, new BufferedImage(width, height, image.getType()));
     }
-
+    
+    /**
+     * segment the central 1/4 pixels 
+     */
+    public static BufferedImage segmentTest(BufferedImage image,String imageSuffix, 
+    		int x, int y, int width, int height){
+//    	int src_width=image.getWidth();
+//    	int src_height=image.getHeight();
+    	//WritableRaster wr=new WritableRaster();
+    	//PixelGrabber pg=new PixelGrabber(image, width/4, height/4, width/2, height/2, true);
+    	
+//    	BufferedImage bi=new BufferedImage(width/2, height/2, image.getType());
+//    	Graphics g=bi.getGraphics();
+//    	g.drawImage(image, 0, 0, width/2, height/2, Color.LIGHT_GRAY, null);
+//    	g.dispose();
+//    	return bi;
+    	
+//    	try{
+//        	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//    		ImageIO.write(image,imageSuffix,baos);
+//    		InputStream is = new ByteArrayInputStream(baos.toByteArray());  
+//    		
+//    		ImageReader reader = ImageIO.getImageReadersBySuffix(imageSuffix).next();
+//    		ImageInputStream iis = ImageIO.createImageInputStream(is);
+//    		reader.setInput(iis,true);
+//        	ImageReadParam param = reader.getDefaultReadParam();
+//        	Rectangle rect = new Rectangle(x,y,width,height);
+//        	param.setSourceRegion(rect);
+//        	output = reader.read(0,param);
+//        	
+//    	}catch(IOException e){
+//    		e.printStackTrace();
+//    	}
+    	return image.getSubimage(x, y, width, height);
+    	
+    }
+    public static BufferedImage segmentTest(BufferedImage image,String imageSuffix, 
+    		Rectangle rect){
+    	int x = (int) rect.getX();
+    	int y = (int) rect.getY();
+    	int width = (int) rect.getWidth();
+    	int height = (int) rect.getHeight();
+    	return BufferedImageHelper.segmentTest(image, imageSuffix, x, y, width, height);
+    }
 }

@@ -44,7 +44,7 @@ public class VideoGrab {
             Logger.setDebug(false);
         }
 
-        String configPath = "grabber_config.json";
+        String configPath = "videograb_config.json";
         if(args.length > 0)
             configPath = args[0];
 
