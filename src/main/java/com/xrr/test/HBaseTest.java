@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * created by raorao 
+ * created by raorao 2016/12/19
  * test Hbase helper
  * @author ubuntu
  *

@@ -3,7 +3,6 @@ com/xrr/bean/ObjectFeature.class
 com/persist/bean/analysis/AnalysisConfig.class
 com/persist/GrabThread.class
 com/persist/test/BufferedImageTest.class
-com/xrr/bolts/SegmentBolt.class
 com/persist/kafka/KafkaObjectConsumer.class
 com/xrr/VideoGrabThread$6.class
 com/persist/bolts/analysis/PictureRecorderBolt.class
@@ -28,6 +27,8 @@ com/xrr/VideoGrabThread$4.class
 com/persist/bolts/analysis/PictureNotifierBolt.class
 com/xrr/VideoGrabThread.class
 com/persist/test/ImageTest.class
+com/xrr/FeatureSave.class
+com/xrr/util/ISaveFeature.class
 com/xrr/test/HDFSTest.class
 com/persist/VideoAnalyzer.class
 com/persist/util/tool/image/AuthImpl$1.class
@@ -37,11 +38,13 @@ com/persist/util/tool/analysis/Predict.class
 com/persist/GrabThread$1.class
 com/xrr/VideoGrabThread$3.class
 com/persist/test/FileTest.class
+com/xrr/bean/FeatureSaveConfig.class
 com/persist/util/helper/FileLogger.class
 com/persist/test/ProducerTest.class
 com/persist/test/GrabTest.class
 com/persist/util/tool/analysis/PictureNotifierImpl.class
 com/persist/bean/image/UrlInfo.class
+com/xrr/bolts/SaveFeatureBolt.class
 com/persist/bolts/analysis/PictureCalculateBolt.class
 com/persist/test/RuntimeTest.class
 com/persist/util/tool/analysis/PictureRecorderImpl.class
@@ -77,9 +80,9 @@ com/persist/VideoGrabber.class
 com/persist/util/tool/analysis/PictureRecorderMultipleImpl.class
 com/persist/util/helper/HDFSHelper.class
 com/persist/util/tool/image/IRecorder.class
-com/xrr/bolts/SaveImage.class
 com/persist/bolts/grab/ResolveBolt.class
 com/persist/test/PpmTest.class
+com/xrr/bolts/ParseBolt.class
 com/persist/util/helper/HBaseHelper.class
 com/persist/GrabThread$3.class
 com/xrr/VideoGrabThread$1.class
@@ -92,9 +95,9 @@ com/persist/test/RedisTest.class
 com/persist/kafka/KafkaSerializer.class
 com/xrr/test/Hello.class
 com/persist/test/SoTest.class
-com/xrr/bolts/SaveFeature.class
 com/persist/util/tool/image/IAuth.class
 com/persist/GrabThread$4.class
 com/persist/util/tool/grab/IGrabber.class
 com/persist/bolts/image/DownloadBolt.class
+com/xrr/util/SaveFeatureImpl.class
 com/persist/bean/image/ImageInfo.class

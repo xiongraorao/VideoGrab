@@ -66,7 +66,7 @@ public class ParseBolt extends BaseRichBolt{
         }
         finally
         {
-            mLogger.log(TAG+"@"+id, "resolve msg total="+count);
+            mLogger.log(TAG+"@"+id, "parse msg total="+count);
             mCollector.ack(tuple);
         }
 	}
@@ -74,6 +74,13 @@ public class ParseBolt extends BaseRichBolt{
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		// TODO Auto-generated method stub
 		declarer.declare(new Fields("url", "objfea"));
+	}
+
+	@Override
+	public void cleanup() {
+		// TODO Auto-generated method stub
+		super.cleanup();
+		mLogger.close();
 	}
 
 }

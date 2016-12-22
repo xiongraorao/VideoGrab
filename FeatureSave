@@ -1,0 +1,2 @@
+2016/12/22 21:54:18 [FeatureSave]: configPath:feature_save_config.json
+2016/12/22 21:54:18 [FeatureSave]: {"urlSpoutParallel":1,"parseBoltParallel":1,"saveFeatureBoltParallel":1,"zks":"localhost:2181","topic":"sendImageTopic","zkRoot":"/opt/zookeeper_data/data","id":"feature-save","zkServers":["localhost"],"zkPort":2181,"brokerList":"localhost:9092","workerNum":1,"hbaseQuorum":"localhost","hbasePort":2181,"hbaseTable":"imageFeature","hbaseColumnFamily":"feature","hbaseColumns":["url","video_id","feature"]}

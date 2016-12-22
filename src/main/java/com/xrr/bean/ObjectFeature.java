@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * created by raorao at 2016/12/21
- * detected object features
+ * function:detected object features
  * @author ubuntu
  *
  */
@@ -13,19 +13,21 @@ public class ObjectFeature implements Serializable{
     public String url;
     //the url of the video which the picture is grabbed from
     public String video_id;
-    
+    //hash code as the test feature
     public String feature;
-
+    public String rowkey;
+    
     public ObjectFeature()
     {
 
     }
 
-    public ObjectFeature(String url, String video_id, String feature)
+    public ObjectFeature(String url, String video_id, String feature,String rowkey)
     {
         this.url = url;
         this.video_id = video_id;
         this.feature = feature;
+        this.rowkey = rowkey;
     }
 
     @Override

@@ -384,6 +384,7 @@ public class VideoGrabThread extends Thread{
                         objFea.url = mDir+File.separator+fileName;
                         objFea.video_id = mUrl;
                         objFea.feature = objFea.mHashCode()+"";
+                        objFea.rowkey = time+"";
                         if(mProducer != null)
                         {
                             String msg = mGson.toJson(objFea);

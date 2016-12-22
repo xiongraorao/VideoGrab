@@ -12,6 +12,11 @@ import java.io.*;
 import java.net.URI;
 import java.lang.String;
 
+/**
+ * create by raorao 2016/12/19
+ * @author ubuntu
+ *
+ */
 public class HDFSTest {
 
 	public static void main(String[] args) {

@@ -142,3 +142,7 @@ redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of strea
 2016-12-22~~09:34:05~~[PictureNotifierImpl]: get redis
 2016-12-22~~09:35:17~~[PictureNotifierImpl]: get redis
 2016-12-22~~09:52:37~~[PictureNotifierImpl]: get redis
+2016-12-22~~21:14:01~~[PictureNotifierImpl]: get redis
+2016-12-22~~21:31:05~~[PictureNotifierImpl]: get redis
+2016-12-22~~21:44:34~~[PictureNotifierImpl]: get redis
+2016-12-22~~21:54:37~~[PictureNotifierImpl]: get redis

@@ -24,6 +24,7 @@ import java.util.Arrays;
  * Created by taozhiheng on 16-7-15.
  *
  * build and submit a topology to grab videos
+ * modified by raorao on 2016/12/22
  *
  */
 public class VideoGrab {
