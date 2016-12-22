@@ -137,3 +137,8 @@ redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of strea
 	at com.xrr.VideoGrabThread.run(VideoGrabThread.java:165)
 2016-12-21~~20:11:59~~[PictureNotifierImpl]: close redis
 2016-12-21~~20:11:59~~[PictureNotifierImpl]: get redis
+2016-12-21~~21:40:46~~[PictureNotifierImpl]: get redis
+2016-12-22~~09:28:58~~[PictureNotifierImpl]: get redis
+2016-12-22~~09:34:05~~[PictureNotifierImpl]: get redis
+2016-12-22~~09:35:17~~[PictureNotifierImpl]: get redis
+2016-12-22~~09:52:37~~[PictureNotifierImpl]: get redis

@@ -27,6 +27,7 @@
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/bean/analysis/PictureKey.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/kafka/KafkaNewProducer.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/test/ImageTest.java
+/home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/bean/ObjectFeature.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/GrabThread.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/util/tool/grab/IVideoNotifier.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/util/helper/Logger.java

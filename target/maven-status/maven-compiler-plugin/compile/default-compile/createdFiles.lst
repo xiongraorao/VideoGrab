@@ -1,4 +1,5 @@
 com/persist/kafka/MethodInterface.class
+com/xrr/bean/ObjectFeature.class
 com/persist/bean/analysis/AnalysisConfig.class
 com/persist/GrabThread.class
 com/persist/test/BufferedImageTest.class

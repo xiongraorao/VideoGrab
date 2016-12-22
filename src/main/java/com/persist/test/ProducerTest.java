@@ -14,7 +14,8 @@ public class ProducerTest {
 
     public static void main(String[] args) throws Exception
     {
-        KafkaNewProducer producer = new KafkaNewProducer("zk01:9092,zk02:9092,zk03:9092");
+        //KafkaNewProducer producer = new KafkaNewProducer("zk01:9092,zk02:9092,zk03:9092");
+        KafkaNewProducer producer = new KafkaNewProducer("localhost:9092");
         int n = Integer.parseInt(args[1]);
         String topic = "test";
         PictureKey key = new PictureKey(args[0], null, null);

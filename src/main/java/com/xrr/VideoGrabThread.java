@@ -10,12 +10,16 @@ import com.persist.util.helper.HDFSHelper;
 import com.persist.util.helper.ImageHelper;
 import com.persist.util.tool.grab.IVideoNotifier;
 import com.persist.util.tool.grab.VideoNotifierImpl;
+import com.xrr.bean.ObjectFeature;
+
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.errors.InvalidTimestampException;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacv.*;
 import javax.imageio.ImageIO;
+
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.management.ManagementFactory;
@@ -120,7 +124,7 @@ public class VideoGrabThread extends Thread{
         mDir = dir;
         String id = String.valueOf(Math.abs(url.hashCode()));
         //this line override the mFormat variable, the same url will start in same code
-        mFormat = id +"-%05d-%d.png";
+        mFormat = id +"-%05d-%d-%d.png";
         mLogger = logger;
         mHelper = new HDFSHelper(dir);
         mGrabber = new FFmpegFrameGrabber(url);
@@ -179,6 +183,7 @@ public class VideoGrabThread extends Thread{
         int oldW;
         int oldH;
         BufferedImage bi = null;
+        BufferedImage[] bis;
         ByteArrayOutputStream baos = null;
 //        OutputStream baos = null;
         String fileName = null;
@@ -195,7 +200,8 @@ public class VideoGrabThread extends Thread{
 
         int num = 0;
 
-        PictureKey pictureKey = new PictureKey();
+        //PictureKey pictureKey = new PictureKey();
+        ObjectFeature objFea = new ObjectFeature();
         try
         {
             mNotifier.notify("prepare to start grabbing video from "+mUrl);
@@ -336,57 +342,71 @@ public class VideoGrabThread extends Thread{
                     bi = BufferedImageHelper.resize(bi, mWidth, mHeight);
                     
                     //segement test, segement the center 100*100 pixel image
-                    bi=BufferedImageHelper.segmentTest(bi, "png", mWidth/4, mHeight/4, mWidth/2, mHeight/2);
-                                       
-                    mLogger.log(mUrl, "size: "+bi.getWidth()+"*"+bi.getHeight());
-                    //write image to byte array output stream
-                    baos = new ByteArrayOutputStream();
-                    try {
-//                        baos = new FileOutputStream(mDir+File.separator+String.format(mFormat, mCount, System.currentTimeMillis()));
-                        ImageIO.write(bi, "png", baos);
-                    } catch (IOException e) {
-                        e.printStackTrace(mLogger.getPrintWriter());
-                        mLogger.getPrintWriter().flush();
-                    }
-                    //write data in byte array output stream to hdfs
-                    InputStream is = new ByteArrayInputStream(baos.toByteArray());
-                    time = System.currentTimeMillis();
-                    fileName = String.format(mFormat, mCount, time);
-                    res = mHelper.upload(is, fileName);
-                    try {
-                        baos.close();
-                        baos = null;
-                    } catch (IOException e) {
-                        e.printStackTrace(mLogger.getPrintWriter());
-                        mLogger.getPrintWriter().flush();
-                    }
-                    mNotifier.notify("write frame " + mCount+" to "+fileName+", "+res);
-                    mLogger.log(mUrl, "write frame " + mCount+" to "+fileName+", "+res);
-                    //send message to kafka
-                    pictureKey.url = mDir+File.separator+fileName;
-                    pictureKey.video_id = mUrl;
-                    pictureKey.time_stamp = String.valueOf(time);
-                    if(mProducer != null)
-                    {
-                        String msg = mGson.toJson(pictureKey);
-                        //Note:
-                        //the process may be blocked even dead when kafka Error happened such as:
-                        //org.apache.kafka.common.errors.InvalidTimestampException:
-                        //The timestamp of the message is out of acceptable range.
-                        //(The Exception will be displayed in mCallback, I know neither the reason nor how to fix it!!!)
-
+                    //bi=BufferedImageHelper.segmentTest(bi, "png", mWidth/4, mHeight/4, mWidth/2, mHeight/2);
+                    //if there are 4 blocks in this image
+                    // get 4 rects info
+                    Rectangle[] rects = new Rectangle[4];
+                    rects[0] = new Rectangle(0, 0, mWidth/2, mHeight/2);
+                    rects[1] = new Rectangle(mWidth/2, 0, mWidth/2, mHeight/2);
+                    rects[2] = new Rectangle(0, mHeight/2, mWidth/2, mHeight/2);
+                    rects[3] = new Rectangle(mWidth/2, mHeight/2, mWidth/2, mHeight/2);
+                    
+                    bis = new BufferedImage[rects.length];
+                    bis = BufferedImageHelper.segmentTest(bi, "png", rects);
+                    for(int i= 0;i < rects.length; i++){
+                    	mLogger.log(mUrl, "size: "+rects[i].getWidth()+"*"+rects[i].getHeight());
+                        //write image to byte array output stream
+                        baos = new ByteArrayOutputStream();
+                        
                         try {
-                            mProducer.send(mTopic, msg, mCallback);
-                            mLogger.log(mTopic, "send kafka msg:" + msg);
-                        }
-                        catch (InvalidTimestampException e)
-                        {
-                            mLogger.log(mUrl, "send kafka fail");
+//                            baos = new FileOutputStream(mDir+File.separator+String.format(mFormat, mCount, System.currentTimeMillis()));
+                            ImageIO.write(bis[i], "png", baos);
+                        } catch (IOException e) {
                             e.printStackTrace(mLogger.getPrintWriter());
                             mLogger.getPrintWriter().flush();
                         }
+                        //write data in byte array output stream to hdfs
+                        InputStream is = new ByteArrayInputStream(baos.toByteArray());
+                        time = System.currentTimeMillis();
+                        fileName = String.format(mFormat, mCount, time, i);
+                        res = mHelper.upload(is, fileName);
+                        try {
+                            baos.close();
+                            baos = null;
+                        } catch (IOException e) {
+                            e.printStackTrace(mLogger.getPrintWriter());
+                            mLogger.getPrintWriter().flush();
+                        }
+                        mNotifier.notify("write frame " + mCount+" to "+fileName+", "+res);
+                        mLogger.log(mUrl, "write frame " + mCount+" to "+fileName+", "+res);
+                        
+                        //send message to kafka
+                        objFea.url = mDir+File.separator+fileName;
+                        objFea.video_id = mUrl;
+                        objFea.feature = objFea.mHashCode()+"";
+                        if(mProducer != null)
+                        {
+                            String msg = mGson.toJson(objFea);
+                            //Note:
+                            //the process may be blocked even dead when kafka Error happened such as:
+                            //org.apache.kafka.common.errors.InvalidTimestampException:
+                            //The timestamp of the message is out of acceptable range.
+                            //(The Exception will be displayed in mCallback, I know neither the reason nor how to fix it!!!)
+
+                            try {
+                                mProducer.send(mTopic, msg, mCallback);
+                                mLogger.log(mTopic, "send kafka msg:" + msg);
+                            }
+                            catch (InvalidTimestampException e)
+                            {
+                                mLogger.log(mUrl, "send kafka fail");
+                                e.printStackTrace(mLogger.getPrintWriter());
+                                mLogger.getPrintWriter().flush();
+                            }
+                        }
+                        mCount++;
                     }
-                    mCount++;
+                    
                 }
                 else
                 {

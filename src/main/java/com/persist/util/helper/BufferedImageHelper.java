@@ -129,4 +129,12 @@ public class BufferedImageHelper {
     	int height = (int) rect.getHeight();
     	return BufferedImageHelper.segmentTest(image, imageSuffix, x, y, width, height);
     }
+    public static BufferedImage[] segmentTest(BufferedImage image,String imageSuffix, 
+    		Rectangle[] rects){
+    	BufferedImage[] buffs = new BufferedImage[rects.length];
+    	for(int i=0;i<rects.length;i++){
+    		buffs[i] = segmentTest(image,imageSuffix,rects[i]);
+    	}
+    	return buffs;
+    }
 }

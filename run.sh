@@ -40,30 +40,30 @@ elif [[ $1 == "-startKafka" ]]
 then
 	echo "start kafka service..."
 	cd /opt/software/kafka_2.11-0.10.0.0
-	sudo bin/kafka-server-start.sh config/server.properties&
+	bin/kafka-server-start.sh config/server.properties&
 	cd -
 elif [[ $1 == "-stopKafka" ]]
 then
 	echo "stop kafka service..."
 	cd /opt/software/kafka_2.11-0.10.0.0
-	sudo bin/kafka-server-stop.sh config/server.properties
+	bin/kafka-server-stop.sh config/server.properties
 	cd -
-elif [[ $1 == "-createTopic" ]]
+elif [[ $1 == "-create" ]]
 then
 	echo "create kafka Topic named" $2
 	cd /opt/software/kafka_2.11-0.10.0.0
 	bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partition 1 --topic $2
 	cd -
-elif [[ $1 == "-sendMessage" ]]
+elif [[ $1 == "-send" ]]
 then
 	echo "Send KafkaMessage to topic named" $2
 	cd /opt/software/kafka_2.11-0.10.0.0
 	bin/kafka-console-producer.sh --broker-list localhost:9092 --topic $2
-elif [[ $1 == "-consumeMessage" ]]
+elif [[ $1 == "-consume" ]]
 then
 	echo "Consume KafkaMessage of topic named" $2
 	cd /opt/software/kafka_2.11-0.10.0.0
-	bin/kafka-console-consumer.sh --zookeeper localhost:9092 --topic $2 --from-beginning
+	bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic $2 --from-beginning
 elif [[ $1 == "-deleteTopic" ]]
 then
 	echo "DeleteTopic named" $2
@@ -92,10 +92,12 @@ else
 	echo "	clean and install project using mvn"
 	echo "-pack"
 	echo "	pack the project to jar file"
-	echo "-createTopic topic_name"
+	echo "-create topic_name"
 	echo "	create kafka topic"
-	echo "-sendMessage topic_name"
+	echo "-send topic_name"
 	echo "	send message to this specifide topic"
+	echo "-consume topic_name"
+	echo " consume message..."
 	echo "-deleteTopic topic_name"
 	echo "	delete kafkatopic"
 	echo "-listTopic"
