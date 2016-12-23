@@ -81,3 +81,4 @@ $ storm jar target/ever-1.0-SNAPSHOT.jar com.xrr.FeatureSave feature_save_config
 > - 安装完项目依赖后，依次启动zookeeper，storm(**注意在项目工作目录下启动storm，否则需要修改videograb_config文件中的cmd命令**，先启动grab topology，然后启动featureSave topology)，kafka（注意创建好两个topic，然后启动grab topology的kafka producer）
 > - 注意根据自己本机的安装目录，重修配置videograb_config.json和feature_save_config.json这两个配置文件
 > - 根据本机环境修改run.sh文件，可以方便执行命令
+
