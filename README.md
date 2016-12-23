@@ -66,6 +66,7 @@ $ storm jar target/ever-1.0-SNAPSHOT.jar com.xrr.FeatureSave feature_save_config
 - (14)hbaseTable，string，将要存入数据的表名
 - (15)hbaseColumnFamily，string，表的列族名
 - (16)hbaseColumns，String[]，表的列名
+
 ---
 
 ### 项目依赖：
