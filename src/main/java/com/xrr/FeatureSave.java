@@ -20,6 +20,7 @@ import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.spout.SchemeAsMultiScheme;
 import backtype.storm.topology.TopologyBuilder;
+import backtype.storm.tuple.Fields;
 import storm.kafka.BrokerHosts;
 import storm.kafka.KafkaSpout;
 import storm.kafka.SpoutConfig;
@@ -89,7 +90,7 @@ public class FeatureSave {
         builder.setSpout(URL_SPOUT, new KafkaSpout(spoutConfig),baseConfig.urlSpoutParallel);
         builder.setBolt(PARSE_BOLT,new ParseBolt(),baseConfig.parseBoltParallel).shuffleGrouping(URL_SPOUT);
         builder.setBolt(SAVE_BOLT, new SaveFeatureBolt(is),baseConfig.saveFeatureBoltParallel)
-        .shuffleGrouping(PARSE_BOLT);
+        .fieldsGrouping(PARSE_BOLT, new Fields("url"));
         
         //submit topology
         Config conf = new Config();
