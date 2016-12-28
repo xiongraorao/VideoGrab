@@ -137,4 +137,7 @@ public class BufferedImageHelper {
     	}
     	return buffs;
     }
+    public static BufferedImage segmentTest(BufferedImage image,String imageSuffix){
+    	return image;
+    }
 }

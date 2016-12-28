@@ -71,7 +71,7 @@ public class SaveFeatureImpl implements ISaveFeature{
         {
             try {
                 mHelper.addRow(tableName, obj.rowkey, columnFamily,columns,
-                        new String[]{obj.url, obj.video_id,obj.feature});
+                        new String[]{obj.url, obj.video_id,obj.feature,obj.parent_img});
                 status = true;
                 mLogger.log(tag, "add row success!");
             } catch (Exception e) {

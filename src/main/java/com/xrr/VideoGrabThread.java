@@ -63,6 +63,7 @@ public class VideoGrabThread extends Thread{
     private Java2DFrameConverter mImageConverter;
 
     private String mFormat = "picture-%05d-%d.png";
+    private String mParentImgFormat;
     private int mWidth = 227;
     private int mHeight = 227;
     //grab rate
@@ -125,6 +126,7 @@ public class VideoGrabThread extends Thread{
         String id = String.valueOf(Math.abs(url.hashCode()));
         //this line override the mFormat variable, the same url will start in same code
         mFormat = id +"-%05d-%d-%d.png";
+        //mParentImgFormat = id +"-%05d-%d.png";
         mLogger = logger;
         mHelper = new HDFSHelper(dir);
         mGrabber = new FFmpegFrameGrabber(url);
@@ -345,11 +347,12 @@ public class VideoGrabThread extends Thread{
                     //bi=BufferedImageHelper.segmentTest(bi, "png", mWidth/4, mHeight/4, mWidth/2, mHeight/2);
                     //if there are 4 blocks in this image
                     // get 4 rects info
-                    Rectangle[] rects = new Rectangle[4];
-                    rects[0] = new Rectangle(0, 0, mWidth/2, mHeight/2);
-                    rects[1] = new Rectangle(mWidth/2, 0, mWidth/2, mHeight/2);
-                    rects[2] = new Rectangle(0, mHeight/2, mWidth/2, mHeight/2);
-                    rects[3] = new Rectangle(mWidth/2, mHeight/2, mWidth/2, mHeight/2);
+                    Rectangle[] rects = new Rectangle[5];
+                    rects[0] = new Rectangle(0, 0, mWidth, mHeight);//origin image
+                    rects[1] = new Rectangle(0, 0, mWidth/2, mHeight/2);
+                    rects[2] = new Rectangle(mWidth/2, 0, mWidth/2, mHeight/2);
+                    rects[3] = new Rectangle(0, mHeight/2, mWidth/2, mHeight/2);
+                    rects[4] = new Rectangle(mWidth/2, mHeight/2, mWidth/2, mHeight/2);
                     
                     bis = new BufferedImage[rects.length];
                     bis = BufferedImageHelper.segmentTest(bi, "png", rects);
@@ -385,6 +388,7 @@ public class VideoGrabThread extends Thread{
                         objFea.video_id = mUrl;
                         objFea.feature = objFea.mHashCode()+"";
                         objFea.rowkey = time+"";
+                        objFea.parent_img = mDir+File.separator+String.format(mFormat, mCount, time, 0);
                         if(mProducer != null)
                         {
                             String msg = mGson.toJson(objFea);
@@ -407,6 +411,10 @@ public class VideoGrabThread extends Thread{
                         }
                         mCount++;
                     }
+                    
+                    //save the origin grabbed image
+                    mLogger.log(mUrl, "size: "+bi.getWidth()+"*"+bi.getHeight());
+                    
                     
                 }
                 else

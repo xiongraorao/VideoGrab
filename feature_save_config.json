@@ -14,5 +14,5 @@
 "hbasePort":2181,
 "hbaseTable":"imageFeature",
 "hbaseColumnFamily":"feature",
-"hbaseColumns":["url","video_id","feature"]
+"hbaseColumns":["url","video_id","feature","parent_img"]
 }

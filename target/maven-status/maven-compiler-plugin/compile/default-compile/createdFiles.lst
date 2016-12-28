@@ -93,7 +93,6 @@ com/persist/bolts/image/ReturnBolt.class
 com/xrr/VideoGrab.class
 com/persist/test/RedisTest.class
 com/persist/kafka/KafkaSerializer.class
-com/xrr/test/Hello.class
 com/persist/test/SoTest.class
 com/persist/util/tool/image/IAuth.class
 com/persist/GrabThread$4.class
