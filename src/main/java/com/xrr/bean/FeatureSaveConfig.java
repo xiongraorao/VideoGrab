@@ -1,5 +1,7 @@
 package com.xrr.bean;
 
+import java.io.Serializable;
+
 /**
  * create by raorao 2016/12/22
  * function:Feature Save Topology Config 
@@ -7,7 +9,7 @@ package com.xrr.bean;
  *
  */
 
-public class FeatureSaveConfig {
+public class FeatureSaveConfig implements Serializable{
 	public int urlSpoutParallel = 2;
 	public int parseBoltParallel = 2;
 	public int saveFeatureBoltParallel = 2;
@@ -23,9 +25,12 @@ public class FeatureSaveConfig {
 	
 	public String hbaseQuorum = "localhost";
 	public int hbasePort = 2181;
-	public String hbaseTable = "imageFeature";
-	public String hbaseColumnFamily = "feature";
-	public String[] hbaseColumns = {"url","video_id","feature"};
+	public String hbaseTable = "imageUrl";
+	public String hbaseTable_hash = "imageHash";
+	public String hbaseColumnFamily = "url";
+	public String hbaseColumnFamily_hash = "hash";
+	public String[] hbaseColumns = {"video_id","parent_img","hash","time"};
+	public String[] hbaseColumns_hash = {"url"};
 	
 	public FeatureSaveConfig(){
 		

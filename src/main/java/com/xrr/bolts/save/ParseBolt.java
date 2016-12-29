@@ -1,4 +1,4 @@
-package com.xrr.bolts;
+package com.xrr.bolts.save;
 
 import java.util.Map;
 

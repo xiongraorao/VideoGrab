@@ -386,8 +386,8 @@ public class VideoGrabThread extends Thread{
                         //send message to kafka
                         objFea.url = mDir+File.separator+fileName;
                         objFea.video_id = mUrl;
-                        objFea.feature = objFea.mHashCode()+"";
-                        objFea.rowkey = time+"";
+                        objFea.hash = objFea.mHashCode()+"";
+                        objFea.time = time+"";
                         objFea.parent_img = mDir+File.separator+String.format(mFormat, mCount, time, 0);
                         if(mProducer != null)
                         {

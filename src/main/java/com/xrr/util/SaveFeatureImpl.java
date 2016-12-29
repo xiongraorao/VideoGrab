@@ -70,8 +70,27 @@ public class SaveFeatureImpl implements ISaveFeature{
         if(mHelper != null)
         {
             try {
-                mHelper.addRow(tableName, obj.rowkey, columnFamily,columns,
-                        new String[]{obj.url, obj.video_id,obj.feature,obj.parent_img});
+                mHelper.addRow(tableName, obj.url, columnFamily,columns,
+                        new String[]{obj.video_id,obj.parent_img,obj.hash,obj.time});
+                status = true;
+                mLogger.log(tag, "add row success!");
+            } catch (Exception e) {
+                e.printStackTrace();
+                mLogger.log(tag, "add row exception!");
+            }
+        }
+		
+		return status;
+	}
+	
+	public boolean save2(ObjectFeature obj) {
+		// TODO Auto-generated method stub
+		boolean status = false;
+        if(mHelper != null)
+        {
+            try {
+                mHelper.addRow(tableName, obj.hash, columnFamily,columns,
+                        new String[]{obj.url});
                 status = true;
                 mLogger.log(tag, "add row success!");
             } catch (Exception e) {

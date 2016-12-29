@@ -3,6 +3,9 @@ package com.persist.util.helper;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
+import org.apache.hadoop.hbase.filter.FilterList;
+import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import java.io.IOException;
 import java.util.*;
@@ -123,6 +126,31 @@ public class HBaseHelper {
         return table.get(get);
 //        Result result = table.get(get);
 //        System.out.println(Bytes.toString(result.getRow()));
+    }
+    
+    // get row by rowkey and column
+    public Result getByRowColumn(String tableName, String row, String columnFamily, String column) throws Exception {
+    	Table table = mConnection.getTable(TableName.valueOf(tableName));
+    	Get get = new Get(Bytes.toBytes(row));
+    	get.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(column));
+    	return table.get(get);
+    }
+    
+    // get row by filter
+    public ResultScanner getByFilter(String tableName, List<String> arr) throws IOException{
+    	Table table = mConnection.getTable(TableName.valueOf(tableName));
+    	FilterList filterList = new FilterList();  
+    	Scan s1 = new Scan();
+    	for(String v:arr){
+    		String[] s = v.split(",");
+    		filterList.addFilter(new SingleColumnValueFilter(Bytes.toBytes(s[0]),  
+                    Bytes.toBytes(s[1]),  
+                    CompareOp.EQUAL,Bytes.toBytes(s[2])));
+    		s1.addColumn(Bytes.toBytes(s[0]), Bytes.toBytes(s[1]));
+    	}
+    	s1.setFilter(filterList);
+    	ResultScanner resultScannerFilterList = table.getScanner(s1);
+    	return resultScannerFilterList;
     }
 
     // get all records

@@ -1,4 +1,4 @@
-package com.xrr.bolts;
+package com.xrr.bolts.save;
 
 import java.util.Map;
 
@@ -28,11 +28,13 @@ public class SaveFeatureBolt extends BaseRichBolt{
 	private HDFSHelper mHelper;
 	private FileLogger mLogger;
 	private ISaveFeature mSaver;
+	private ISaveFeature mSaver2;//save hash-url table for fast selection
     private int id;
     private long count = 0;
     
-    public SaveFeatureBolt(ISaveFeature sf){
-    	mSaver=sf;
+    public SaveFeatureBolt(ISaveFeature sf,ISaveFeature sf2){
+    	mSaver = sf;
+    	mSaver2 = sf2;
     }
 	
 	public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
@@ -42,7 +44,8 @@ public class SaveFeatureBolt extends BaseRichBolt{
 		id = context.getThisTaskId();
 		mLogger = new FileLogger(TAG+"@"+id);
 		mLogger.log(TAG+"@"+id, "prepared");
-		mSaver.setLogger(mLogger,TAG+"@"+id);
+		mSaver.setLogger(mLogger,TAG+"@"+id+"_saveUrl");
+		mSaver2.setLogger(mLogger, TAG+"@"+id+"_saveHash");
 	}
 
 	public void execute(Tuple tuple) {
@@ -52,12 +55,19 @@ public class SaveFeatureBolt extends BaseRichBolt{
             return;
         count++;
         String tag = null;
+        String tag2 = null;
         if(objFea.url !=null){
         	tag = objFea.url;
+        	tag2 = objFea.hash;
         }
-        mLogger.log(TAG+"@"+id, "prepare to save: "+tag+"to Hbase");
+        mLogger.log(TAG+"@"+id, "prepare to save: "+tag+" to Hbase");
         boolean status = mSaver.save(objFea);
-        mLogger.log(TAG+"@"+id, "saved: "+objFea.url+", status = "+status);
+        mLogger.log(TAG+"@"+id, "saved: "+tag+", status = "+status);
+        
+        mLogger.log(TAG+"@"+id, "prepare to save: "+tag2+" to Hbase");
+        boolean status2 = mSaver2.save2(objFea);
+        mLogger.log(TAG+"@"+id, "saved: "+tag2+", status = "+status2);
+        
         mCollector.ack(tuple);
 	}
 

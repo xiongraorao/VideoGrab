@@ -14,8 +14,8 @@ public class ObjectFeature implements Serializable{
     //the url of the video which the picture is grabbed from
     public String video_id;
     //hash code as the test feature
-    public String feature;
-    public String rowkey;
+    public String hash;
+    public String time;
     public String parent_img;//which image is this object-image from
     
     public ObjectFeature()
@@ -23,12 +23,12 @@ public class ObjectFeature implements Serializable{
 
     }
 
-    public ObjectFeature(String url, String video_id, String feature,String rowkey, String parent_img)
+    public ObjectFeature(String url, String video_id, String parent_img,String hash,String time)
     {
         this.url = url;
         this.video_id = video_id;
-        this.feature = feature;
-        this.rowkey = rowkey;
+        this.hash = hash;
+        this.time = time;
         this.parent_img = parent_img;
     }
 
@@ -41,7 +41,7 @@ public class ObjectFeature implements Serializable{
         ObjectFeature key = (ObjectFeature)obj;
         boolean r1 = (url == null) ? (key.url == null) : (url.equals(key.url));
         boolean r2 = (video_id == null) ? (key.video_id == null) : (video_id.equals(key.video_id));
-        boolean r3 = (feature == null) ? (key.feature == null) : (feature.equals(key.feature));
+        boolean r3 = (hash == null) ? (key.hash == null) : (hash.equals(key.hash));
         boolean r4 = (parent_img == null) ? (key.parent_img == null) : (parent_img.equals(key.parent_img));
         return r1 && r2 && r3 && r4;
     }
@@ -50,7 +50,7 @@ public class ObjectFeature implements Serializable{
     public long mHashCode() {
     	long h1 = url == null ? 0 :url.hashCode();
     	long h2 = video_id == null ? 0 : video_id.hashCode();
-    	long h3 = feature == null ? 0 : feature.hashCode();
+    	long h3 = hash == null ? 0 : hash.hashCode();
     	long h4 = parent_img == null ? 0: parent_img.hashCode();
     	long hashCode = h1;
         hashCode = hashCode*31+h2;

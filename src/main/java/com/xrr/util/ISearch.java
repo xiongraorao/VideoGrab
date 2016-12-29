@@ -6,15 +6,14 @@ import com.persist.util.helper.FileLogger;
 import com.xrr.bean.ObjectFeature;
 
 /**
- * created by raorao 2016/12/22
+ * created by raorao 2016/12/29
  * @author ubuntu
  *
  */
 
-public interface ISaveFeature extends Serializable{
+public interface ISearch extends Serializable{
 	void prepare();
 	void setLogger(FileLogger log, String tag);
-	boolean save(ObjectFeature obj);
-	boolean save2(ObjectFeature obj);
+	boolean search(ObjectFeature obj);
 	void close();
 }

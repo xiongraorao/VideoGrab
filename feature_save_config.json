@@ -12,7 +12,10 @@
 "workerNum":1,
 "hbaseQuorum":"localhost",
 "hbasePort":2181,
-"hbaseTable":"imageFeature",
-"hbaseColumnFamily":"feature",
-"hbaseColumns":["url","video_id","feature","parent_img"]
+"hbaseTable":"imageUrl",
+"hbaseTable_hash": "imageHash",
+"hbaseColumnFamily":"url",
+"hbaseColumnFamily_hash":"hash",
+"hbaseColumns":["video_id","parent_img","hash","time"],
+"hbaseColumns_hash":["url"]
 }

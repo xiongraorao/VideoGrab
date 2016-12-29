@@ -10,8 +10,8 @@ import com.persist.bean.grab.GrabConfig;
 import com.persist.util.helper.FileHelper;
 import com.persist.util.helper.Logger;
 import com.xrr.bean.FeatureSaveConfig;
-import com.xrr.bolts.ParseBolt;
-import com.xrr.bolts.SaveFeatureBolt;
+import com.xrr.bolts.save.ParseBolt;
+import com.xrr.bolts.save.SaveFeatureBolt;
 import com.xrr.util.ISaveFeature;
 import com.xrr.util.SaveFeatureImpl;
 
@@ -84,12 +84,15 @@ public class FeatureSave {
         
         ISaveFeature is = new SaveFeatureImpl(baseConfig.hbaseQuorum, baseConfig.hbasePort, 
         		baseConfig.hbaseTable, baseConfig.hbaseColumnFamily, baseConfig.hbaseColumns);
+        //save hash-url for fast selection
+        ISaveFeature is2 = new SaveFeatureImpl(baseConfig.hbaseQuorum, baseConfig.hbasePort, 
+        		baseConfig.hbaseTable_hash, baseConfig.hbaseColumnFamily_hash, baseConfig.hbaseColumns_hash);
         
         //construct topology builder
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout(URL_SPOUT, new KafkaSpout(spoutConfig),baseConfig.urlSpoutParallel);
         builder.setBolt(PARSE_BOLT,new ParseBolt(),baseConfig.parseBoltParallel).shuffleGrouping(URL_SPOUT);
-        builder.setBolt(SAVE_BOLT, new SaveFeatureBolt(is),baseConfig.saveFeatureBoltParallel)
+        builder.setBolt(SAVE_BOLT, new SaveFeatureBolt(is,is2),baseConfig.saveFeatureBoltParallel)
         .fieldsGrouping(PARSE_BOLT, new Fields("url"));
         
         //submit topology
