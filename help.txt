@@ -36,4 +36,6 @@ Video Grab:
 
 {"url":"rtmp://live.hkstv.hk.lxdns.com/live/hks","dir":"/home/ubuntu/grabbedImages","cmd":"quit"}
 
+添加查询命令：
+{"url":"/home/ubuntu/grabbedImages/624505710-00743-1483017436947-3.png","hash":"13281116698286"}
 

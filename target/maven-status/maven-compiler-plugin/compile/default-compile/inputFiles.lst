@@ -1,4 +1,5 @@
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/bean/image/CheckConfig.java
+/home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/bean/ImageInfo.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/util/tool/analysis/PictureRecorderImpl.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/util/helper/ImageHelper.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/bolts/image/DownloadBolt.java
@@ -56,9 +57,11 @@
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/test/RuntimeTest.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/util/ISearch.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/VideoGrabThread.java
+/home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/bolts/search/Search_ParseBolt.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/kafka/KafkaSerializer.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/bean/FeatureSaveConfig.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/bean/grab/GrabConfig.java
+/home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/bolts/search/SearchBolt.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/xrr/test/HBaseTest.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/bolts/analysis/PictureResultBolt.java
 /home/ubuntu/workspace/VideoGrab/src/main/java/com/persist/bean/analysis/PictureResult.java

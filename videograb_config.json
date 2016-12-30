@@ -1,7 +1,7 @@
 {
-"urlSpoutParallel": 2,
+"urlSpoutParallel": 1,
 "resolveBoltParallel": 1,
-"grabBoltParallel": 3,
+"grabBoltParallel": 1,
 "grabLimit": 3,
 "cmd_old": "java -Djava.ext.dirs=$STORM_HOME/lib/  -cp $STORM_HOME/ever-1.0-SNAPSHOT.jar com.persist.GrabThread ",
 "cmd": "storm jar target/ever-1.0-SNAPSHOT.jar com.xrr.VideoGrabThread ",

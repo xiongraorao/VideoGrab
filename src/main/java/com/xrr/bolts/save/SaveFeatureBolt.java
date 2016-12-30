@@ -25,12 +25,12 @@ public class SaveFeatureBolt extends BaseRichBolt{
 	private final static String TAG = "SaveFeatureBolt";
 	
 	private OutputCollector mCollector;
-	private HDFSHelper mHelper;
 	private FileLogger mLogger;
 	private ISaveFeature mSaver;
 	private ISaveFeature mSaver2;//save hash-url table for fast selection
     private int id;
     private long count = 0;
+    private long count2 = 0;
     
     public SaveFeatureBolt(ISaveFeature sf,ISaveFeature sf2){
     	mSaver = sf;
@@ -41,6 +41,7 @@ public class SaveFeatureBolt extends BaseRichBolt{
 		// TODO Auto-generated method stub
 		mCollector = collector;
 		mSaver.prepare();//init hbase
+		mSaver2.prepare();
 		id = context.getThisTaskId();
 		mLogger = new FileLogger(TAG+"@"+id);
 		mLogger.log(TAG+"@"+id, "prepared");
@@ -53,7 +54,6 @@ public class SaveFeatureBolt extends BaseRichBolt{
         ObjectFeature objFea = (ObjectFeature) tuple.getValue(1);
         if(objFea == null)
             return;
-        count++;
         String tag = null;
         String tag2 = null;
         if(objFea.url !=null){
@@ -63,11 +63,18 @@ public class SaveFeatureBolt extends BaseRichBolt{
         mLogger.log(TAG+"@"+id, "prepare to save: "+tag+" to Hbase");
         boolean status = mSaver.save(objFea);
         mLogger.log(TAG+"@"+id, "saved: "+tag+", status = "+status);
-        
+        if(status){
+        	count++;
+        	mLogger.log(TAG+"@"+id, ", saved to urlTable records total = "+count);
+        }
         mLogger.log(TAG+"@"+id, "prepare to save: "+tag2+" to Hbase");
         boolean status2 = mSaver2.save2(objFea);
         mLogger.log(TAG+"@"+id, "saved: "+tag2+", status = "+status2);
-        
+        //show record total numbers every 10 records
+        if(status2){
+        	count2++;
+        	mLogger.log(TAG+"@"+id, ", saved to hashTable records total = "+count2);
+        }
         mCollector.ack(tuple);
 	}
 
