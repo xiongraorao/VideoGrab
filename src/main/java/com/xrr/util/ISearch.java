@@ -14,6 +14,6 @@ import com.xrr.bean.ObjectFeature;
 public interface ISearch extends Serializable{
 	void prepare();
 	void setLogger(FileLogger log, String tag);
-	boolean search(ObjectFeature obj);
+	boolean search(String hash);
 	void close();
 }

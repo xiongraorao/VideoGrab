@@ -26,14 +26,12 @@ public class SearchImpl implements ISearch{
     private int port;
     
     private String tableName;
-    private String feature;
     private String tag;
 	public SearchImpl(String quorum, int port,
-    		String tableName, String feature){
+    		String tableName){
 		this.quorum = quorum;
 		this.port = port;
 		this.tableName = tableName;
-		this.feature = feature;
 	}
 	public void prepare() {
 		// TODO Auto-generated method stub
@@ -46,12 +44,12 @@ public class SearchImpl implements ISearch{
 		mLogger = log;
 		this.tag =tag;
 	}
-	public boolean search(ObjectFeature obj) {
+	public boolean search(String hash) {
 		// TODO Auto-generated method stub
 		boolean status = false;
 		if(mHelper != null){
 			List<String> arr = new ArrayList<String>();
-			arr.add("feature,feature"+feature);
+			arr.add("url,hash,"+hash);
 			try {
 				ResultScanner rs= mHelper.getByFilter(tableName, arr);
 			    for (Result result : rs) {

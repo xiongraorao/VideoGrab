@@ -10,9 +10,19 @@ import com.persist.util.helper.FileHelper;
 import com.persist.util.helper.Logger;
 import com.xrr.bean.FeatureSaveConfig;
 import com.xrr.bean.SearchConfig;
+import com.xrr.bolts.search.Search_ParseBolt;
+import com.xrr.bolts.search.SearchBolt;
+import com.xrr.util.ISearch;
+import com.xrr.util.SearchImpl;
 
+import backtype.storm.Config;
+import backtype.storm.LocalCluster;
+import backtype.storm.StormSubmitter;
 import backtype.storm.spout.SchemeAsMultiScheme;
+import backtype.storm.topology.TopologyBuilder;
+import backtype.storm.tuple.Fields;
 import storm.kafka.BrokerHosts;
+import storm.kafka.KafkaSpout;
 import storm.kafka.SpoutConfig;
 import storm.kafka.StringScheme;
 import storm.kafka.ZkHosts;
@@ -68,8 +78,26 @@ public class Search {
         spoutConfig.zkPort = baseConfig.zkPort;
         spoutConfig.forceFromStart = false;
         
+        ISearch is = new SearchImpl(baseConfig.hbaseQuorum, baseConfig.hbasePort, baseConfig.hbaseTable);
         
+        TopologyBuilder builder = new TopologyBuilder();
+        builder.setSpout(URL_SPOUT, new KafkaSpout(spoutConfig),baseConfig.urlSpoutParallel);
+        builder.setBolt(PARSE_BOLT,new Search_ParseBolt(),baseConfig.parseBoltParallel).shuffleGrouping(URL_SPOUT);
+        builder.setBolt(SEARCH_BOLT, new SearchBolt(is),baseConfig.saveFeatureBoltParallel)
+        .fieldsGrouping(PARSE_BOLT, new Fields("url"));
         
+        //submit topology
+        Config conf = new Config();
+        if (args.length > 1) {
+            conf.setNumWorkers(baseConfig.workerNum);
+            conf.setDebug(false);
+            StormSubmitter.submitTopology(args[1], conf, builder.createTopology());
+        } else {
+            conf.setDebug(true);
+            LocalCluster cluster = new LocalCluster();
+            cluster.submitTopology("featureSave", conf, builder.createTopology());
+        }
+        Logger.close();
         
 	}
 

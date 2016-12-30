@@ -1,4 +1,5 @@
 com/persist/kafka/MethodInterface.class
+com/xrr/bolts/search/SearchBolt.class
 com/xrr/bean/ObjectFeature.class
 com/persist/bean/analysis/AnalysisConfig.class
 com/persist/GrabThread.class
@@ -25,9 +26,11 @@ com/persist/kafka/KafkaObjectProducer.class
 com/persist/kafka/KafkaDeserializer.class
 com/persist/bean/image/CheckConfig.class
 com/persist/GrabThread$ListenThread.class
+com/xrr/bean/ImageInfo.class
 com/xrr/VideoGrabThread$4.class
 com/persist/bolts/analysis/PictureNotifierBolt.class
 com/xrr/VideoGrabThread.class
+com/xrr/bolts/search/Search_ParseBolt.class
 com/persist/test/ImageTest.class
 com/xrr/FeatureSave.class
 com/xrr/util/ISaveFeature.class
