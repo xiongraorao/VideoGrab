@@ -3,6 +3,8 @@ package com.xrr.bean;
 import java.io.Serializable;
 
 public class SearchConfig implements Serializable{
+	
+	public String logDir = "/home/hadoop/VideoGrab/logs";
 	public int urlSpoutParallel = 1;
 	public int parseBoltParallel = 1;
 	public int saveFeatureBoltParallel = 1;

@@ -10,6 +10,8 @@ import java.io.Serializable;
  */
 
 public class FeatureSaveConfig implements Serializable{
+	
+	public String logDir = "/home/hadoop/VideoGrab/logs";
 	public int urlSpoutParallel = 2;
 	public int parseBoltParallel = 2;
 	public int saveFeatureBoltParallel = 2;

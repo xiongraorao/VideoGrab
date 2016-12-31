@@ -16,6 +16,8 @@ import com.persist.util.helper.Logger;
 import com.persist.util.tool.grab.GrabberImpl;
 import com.persist.util.tool.grab.IGrabber;
 import storm.kafka.*;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Arrays;
@@ -37,13 +39,7 @@ public class VideoGrab {
 
     public static void main(String[] args) throws Exception
     {
-        //reset log output stream to log file
-        try {
-            Logger.setOutput(new FileOutputStream(TAG, true));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Logger.setDebug(false);
-        }
+
 
         String configPath = "videograb_config.json";
         if(args.length > 0)
@@ -59,6 +55,13 @@ public class VideoGrab {
         catch (JsonSyntaxException e)
         {
             e.printStackTrace();
+        }
+        //reset log output stream to log file
+        try {
+            Logger.setOutput(new FileOutputStream(baseConfig.logDir+File.separator+TAG, true));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Logger.setDebug(false);
         }
 
         Logger.log(TAG, "configPath:"+configPath);
@@ -85,10 +88,10 @@ public class VideoGrab {
 
 
         builder.setBolt(RESOLVE_BOLT,
-                new ResolveBolt(), baseConfig.resolveBoltParallel)
+                new ResolveBolt(baseConfig.logDir), baseConfig.resolveBoltParallel)
                 .shuffleGrouping(URL_SPOUT);
         GrabBolt grabBolt = new GrabBolt(grabber, baseConfig.grabLimit/baseConfig.grabBoltParallel,
-                baseConfig.sendTopic, baseConfig.brokerList);
+                baseConfig.sendTopic, baseConfig.brokerList, baseConfig.logDir);
         grabBolt.setRedis(baseConfig.redisHost, baseConfig.redisPort, baseConfig.redisPassword);
         builder.setBolt(GRAB_BOLT,
                 grabBolt,

@@ -19,6 +19,7 @@ public class GrabberImpl implements IGrabber {
     private long grabTimeout = 3000;
     private long restartTimeout = 8000;
     private int retry = 3;
+    private String logDir = null;
 
     private String nameFormat;
 
@@ -55,6 +56,7 @@ public class GrabberImpl implements IGrabber {
         this.restartTimeout = restartTimeout;
         this.retry = retry;
     }
+    
 
     public void setFrameRate(double rate)
     {

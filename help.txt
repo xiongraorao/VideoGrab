@@ -39,3 +39,11 @@ Video Grab:
 添加查询命令：
 {"url":"/home/ubuntu/grabbedImages/624505710-00743-1483017436947-3.png","hash":"13281116698286"}
 
+服务器：
+抓取命令：
+{"url":"rtmp://live.hkstv.hk.lxdns.com/live/hks","dir":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages","cmd":"add"}
+
+{"url":"rtmp://live.hkstv.hk.lxdns.com/live/hks","dir":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages","cmd":"quit"}
+
+查询测试命令：
+{"url":"url for test, name=624505710-00389-1483152380897-4.png ","hash":"39090762157757"}

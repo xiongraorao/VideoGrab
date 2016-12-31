@@ -10,6 +10,8 @@ import com.persist.bean.grab.VideoInfo;
 import com.persist.util.helper.FileLogger;
 import com.persist.util.helper.ProcessHelper;
 import com.persist.util.tool.grab.IGrabber;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -44,8 +46,19 @@ public class GrabBolt extends BaseRichBolt {
     private FileLogger mLogger;
     private int id;
     private long count = 0;
+    private String logDir;
 
 
+    public GrabBolt(IGrabber grabber, int grabLimit, String sendTopic, String brokerList, String logDir)
+    {
+        this.mGrabber = grabber;
+        this.mGrabLimit = grabLimit;
+        this.mBrokerList = brokerList;
+        this.mSendTopic = sendTopic;
+        this.mCurrentGrab = 0;
+        this.logDir = logDir;
+    }
+    
     public GrabBolt(IGrabber grabber, int grabLimit, String sendTopic, String brokerList)
     {
         this.mGrabber = grabber;
@@ -88,7 +101,7 @@ public class GrabBolt extends BaseRichBolt {
         mProcessMap = new HashMap<String, Process>(mGrabLimit);
         mCurrentGrab = 0;
         id = topologyContext.getThisTaskId();
-        mLogger = new FileLogger("grab@"+id);
+        mLogger = new FileLogger(logDir+File.separator+"grab@"+id);
         mLogger.log(TAG+"@"+id, "prepare, current process status:"+mCurrentGrab+"/"+mGrabLimit);
     }
 

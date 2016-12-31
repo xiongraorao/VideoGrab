@@ -1,5 +1,6 @@
 package com.xrr;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Arrays;
@@ -43,15 +44,7 @@ public class FeatureSave {
     private final static String SAVE_BOLT = "save-bolt";
 
 
-	public static void main(String[] args) throws Exception{
-        //reset log output stream to log file
-        try {
-            Logger.setOutput(new FileOutputStream(TAG, true));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Logger.setDebug(false);
-        }
-        
+	public static void main(String[] args) throws Exception{ 
         
         String configPath = "videograb_config.json";
         if(args.length > 0)
@@ -67,6 +60,13 @@ public class FeatureSave {
         catch (JsonSyntaxException e)
         {
             e.printStackTrace();
+        }
+        //reset log output stream to log file
+        try {
+            Logger.setOutput(new FileOutputStream(baseConfig.logDir+File.separator+TAG, true));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Logger.setDebug(false);
         }
         
         Logger.log(TAG, "configPath:"+configPath);
@@ -91,8 +91,8 @@ public class FeatureSave {
         //construct topology builder
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout(URL_SPOUT, new KafkaSpout(spoutConfig),baseConfig.urlSpoutParallel);
-        builder.setBolt(PARSE_BOLT,new ParseBolt(),baseConfig.parseBoltParallel).shuffleGrouping(URL_SPOUT);
-        builder.setBolt(SAVE_BOLT, new SaveFeatureBolt(is,is2),baseConfig.saveFeatureBoltParallel)
+        builder.setBolt(PARSE_BOLT,new ParseBolt(baseConfig.logDir),baseConfig.parseBoltParallel).shuffleGrouping(URL_SPOUT);
+        builder.setBolt(SAVE_BOLT, new SaveFeatureBolt(is, is2, baseConfig.logDir),baseConfig.saveFeatureBoltParallel)
         .fieldsGrouping(PARSE_BOLT, new Fields("url"));
         
         //submit topology

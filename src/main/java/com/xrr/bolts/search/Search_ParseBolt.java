@@ -1,5 +1,6 @@
 package com.xrr.bolts.search;
 
+import java.io.File;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -21,17 +22,22 @@ public class Search_ParseBolt extends BaseRichBolt {
 	private final static String TAG = "Search_ParseBolt";
     private Gson mGson;
     private OutputCollector mCollector;
+    private String logDir;
 
     private FileLogger mLogger;
     private int id;
     private long count = 0;
+    
+    public Search_ParseBolt(String logDir){
+    	this.logDir = logDir;
+    }
     
 	public void prepare(Map stormConf, TopologyContext context, OutputCollector outputCollector) {
 		// TODO Auto-generated method stub
 		mGson = new Gson();
 		mCollector = outputCollector;
 		id = context.getThisTaskId();
-		mLogger = new FileLogger(TAG+"@"+id);
+		mLogger = new FileLogger(logDir+File.separator+TAG+"@"+id);
 		mLogger.log(TAG+"@"+id, "prepare to parse kafka message from web ");
 	}
 

@@ -1,5 +1,6 @@
 package com.xrr.bolts.save;
 
+import java.io.File;
 import java.util.Map;
 
 import backtype.storm.task.OutputCollector;
@@ -14,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.persist.bean.grab.VideoInfo;
 import com.persist.util.helper.FileLogger;
+import com.sun.source.tree.ParenthesizedTree;
 import com.xrr.bean.ObjectFeature;
 
 /**
@@ -31,13 +33,18 @@ public class ParseBolt extends BaseRichBolt{
     private FileLogger mLogger;
     private int id;
     private long count = 0;
+    private String logDir;
+    
+    public ParseBolt(String logDir){
+    	this.logDir = logDir;
+    }
 
 	public void prepare(Map map, TopologyContext context, OutputCollector outputCollector) {
 		// TODO Auto-generated method stub
 		mGson = new Gson();
 		mCollector = outputCollector;
 		id = context.getThisTaskId();
-		mLogger = new FileLogger(TAG+"@"+id);
+		mLogger = new FileLogger(logDir+File.separator+TAG+"@"+id);
 		mLogger.log(TAG+"@"+id, "prepare to parse kafka message");
 	}
 

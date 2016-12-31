@@ -11,6 +11,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.persist.bean.grab.VideoInfo;
 import com.persist.util.helper.FileLogger;
+
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -25,16 +27,25 @@ public class ResolveBolt extends BaseRichBolt {
     private final static String TAG = "ResolveBolt";
     private Gson mGson;
     private OutputCollector mCollector;
+    private String logDir;
 
     private FileLogger mLogger;
     private int id;
     private long count = 0;
+    
+    public ResolveBolt(String logDir){
+    	this.logDir = logDir;
+    }
+    public ResolveBolt()
+    {
+    	
+    }
 
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         mGson = new Gson();
         mCollector = outputCollector;
         id = topologyContext.getThisTaskId();
-        mLogger = new FileLogger("resolve@"+id);
+        mLogger = new FileLogger(logDir+File.separator+"resolve@"+id);
         mLogger.log(TAG+"@"+id, "prepare");
     }
 

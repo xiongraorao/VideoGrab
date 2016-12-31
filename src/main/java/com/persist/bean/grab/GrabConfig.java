@@ -8,6 +8,7 @@ package com.persist.bean.grab;
  */
 public class GrabConfig {
 
+	public static String logDir = "/home/hadoop/VideoGrab/logs";
     //the KafkaSpout parallelism which will determine the process num
     public int urlSpoutParallel = 1;
     //the resolveBolt parallelism
@@ -70,6 +71,10 @@ public class GrabConfig {
     public GrabConfig()
     {
 
+    }
+    public static String getLogDir()
+    {
+    	return logDir;
     }
 
 }

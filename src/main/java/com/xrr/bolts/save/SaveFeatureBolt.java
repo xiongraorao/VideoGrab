@@ -1,5 +1,6 @@
 package com.xrr.bolts.save;
 
+import java.io.File;
 import java.util.Map;
 
 import com.persist.bean.grab.VideoInfo;
@@ -28,13 +29,15 @@ public class SaveFeatureBolt extends BaseRichBolt{
 	private FileLogger mLogger;
 	private ISaveFeature mSaver;
 	private ISaveFeature mSaver2;//save hash-url table for fast selection
+	private String logDir;
     private int id;
     private long count = 0;
     private long count2 = 0;
     
-    public SaveFeatureBolt(ISaveFeature sf,ISaveFeature sf2){
+    public SaveFeatureBolt(ISaveFeature sf,ISaveFeature sf2, String logDir){
     	mSaver = sf;
     	mSaver2 = sf2;
+    	this.logDir = logDir;
     }
 	
 	public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
@@ -43,7 +46,7 @@ public class SaveFeatureBolt extends BaseRichBolt{
 		mSaver.prepare();//init hbase
 		mSaver2.prepare();
 		id = context.getThisTaskId();
-		mLogger = new FileLogger(TAG+"@"+id);
+		mLogger = new FileLogger(logDir+File.separator+TAG+"@"+id);
 		mLogger.log(TAG+"@"+id, "prepared");
 		mSaver.setLogger(mLogger,TAG+"@"+id+"_saveUrl");
 		mSaver2.setLogger(mLogger, TAG+"@"+id+"_saveHash");

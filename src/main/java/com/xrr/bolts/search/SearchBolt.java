@@ -1,5 +1,6 @@
 package com.xrr.bolts.search;
 
+import java.io.File;
 import java.util.Map;
 
 import com.persist.util.helper.FileLogger;
@@ -19,9 +20,11 @@ public class SearchBolt extends BaseRichBolt{
 	private OutputCollector mCollector;
 	private FileLogger mLogger;
     private int id;
+    private String logDir;
     
-	public SearchBolt(ISearch is){
+	public SearchBolt(ISearch is, String logDir){
 		this.mSearcher = is;
+		this.logDir = logDir;
 	}
 	
 	public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
@@ -29,7 +32,7 @@ public class SearchBolt extends BaseRichBolt{
 		mCollector = collector;
 		mSearcher.prepare();//init hbase
 		id = context.getThisTaskId();
-		mLogger = new FileLogger(TAG+"@"+id);
+		mLogger = new FileLogger(logDir+File.separator+TAG+"@"+id);
 		mLogger.log(TAG+"@"+id, "prepared");
 		mSearcher.setLogger(mLogger, TAG+"@"+id+"_search");
 	}

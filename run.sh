@@ -72,13 +72,13 @@ then
 	echo "Consume KafkaMessage of topic named" $2
 	cd /opt/software/kafka_2.11-0.10.0.0
 	bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic $2 --from-beginning
-elif [[ $1 == "-deleteTopic" ]]
+elif [[ $1 == "-delete" ]]
 then
 	echo "DeleteTopic named" $2
 	cd /opt/software/kafka_2.11-0.10.0.0
 	bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic $2
 	cd -
-elif [[ $1 == "-listTopic" ]]
+elif [[ $1 == "-list" ]]
 then
 	echo "view topics..."
 	cd /opt/software/kafka_2.11-0.10.0.0

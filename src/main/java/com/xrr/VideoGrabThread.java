@@ -2,6 +2,7 @@ package com.xrr;
 
 import com.google.gson.Gson;
 import com.persist.bean.analysis.PictureKey;
+import com.persist.bean.grab.GrabConfig;
 import com.persist.bean.grab.VideoInfo;
 import com.persist.kafka.KafkaNewProducer;
 import com.persist.util.helper.BufferedImageHelper;
@@ -790,11 +791,10 @@ public class VideoGrabThread extends Thread{
         final String dir = args[4];
         final String topic = args[5];
         final String brokerList = args[6];
-
-
+        
         String name = ManagementFactory.getRuntimeMXBean().getName();
         final String pid = name.split("@")[0];
-        final FileLogger logger = new FileLogger("GrabThread@"+pid);
+        final FileLogger logger = new FileLogger(GrabConfig.getLogDir()+File.separator+"GrabThread@"+pid);
 
         double rate = 1.0;
         if(args.length >= 8)

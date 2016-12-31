@@ -1,5 +1,6 @@
 package com.xrr;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Arrays;
@@ -8,7 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.persist.util.helper.FileHelper;
 import com.persist.util.helper.Logger;
-import com.xrr.bean.FeatureSaveConfig;
 import com.xrr.bean.SearchConfig;
 import com.xrr.bolts.search.Search_ParseBolt;
 import com.xrr.bolts.search.SearchBolt;
@@ -40,14 +40,9 @@ public class Search {
     private final static String URL_SPOUT = "url-spout";
     private final static String PARSE_BOLT = "parse-bolt";
     private final static String SEARCH_BOLT = "search-bolt";
+    
 	public static void main(String[] args) throws Exception{
-		// TODO Auto-generated method stub
-        try {
-            Logger.setOutput(new FileOutputStream(TAG, true));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Logger.setDebug(false);
-        }
+
         
         String configPath = "search_config.json";
         if(args.length > 0)
@@ -65,6 +60,13 @@ public class Search {
             e.printStackTrace();
         }
         
+		// TODO Auto-generated method stub
+        try {
+            Logger.setOutput(new FileOutputStream(baseConfig.logDir+File.separator+TAG, true));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Logger.setDebug(false);
+        }
         Logger.log(TAG, "configPath:"+configPath);
         Logger.log(TAG, gson.toJson(baseConfig));
         
@@ -82,8 +84,8 @@ public class Search {
         
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout(URL_SPOUT, new KafkaSpout(spoutConfig),baseConfig.urlSpoutParallel);
-        builder.setBolt(PARSE_BOLT,new Search_ParseBolt(),baseConfig.parseBoltParallel).shuffleGrouping(URL_SPOUT);
-        builder.setBolt(SEARCH_BOLT, new SearchBolt(is),baseConfig.saveFeatureBoltParallel)
+        builder.setBolt(PARSE_BOLT,new Search_ParseBolt(baseConfig.logDir),baseConfig.parseBoltParallel).shuffleGrouping(URL_SPOUT);
+        builder.setBolt(SEARCH_BOLT, new SearchBolt(is, baseConfig.logDir),baseConfig.saveFeatureBoltParallel)
         .fieldsGrouping(PARSE_BOLT, new Fields("url"));
         
         //submit topology
