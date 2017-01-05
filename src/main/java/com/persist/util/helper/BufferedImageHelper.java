@@ -4,11 +4,19 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.awt.Rectangle;
+
+import com.xrr.test.ObjectDetectPython;
+import org.jpy.PyLib;
+import org.jpy.PyModule;
+import org.jpy.PyObject;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
@@ -25,12 +33,8 @@ import java.awt.image.*;
  */
 public class BufferedImageHelper {
 
-    /**
-     *
-     * @param image the source image
-     * @param degree the rotate degree [-180, 180]
-     * @return the destination image
-     */
+	//private static PyModule module;
+
     public static BufferedImage rotate(BufferedImage image, int degree) {
         int iw = image.getWidth();
         int ih = image.getHeight();
@@ -140,4 +144,23 @@ public class BufferedImageHelper {
     public static BufferedImage segmentTest(BufferedImage image,String imageSuffix){
     	return image;
     }
+
+	public static String saveBufImg(BufferedImage image,String tag, String dir,
+									  FileLogger log){
+    	String fileName = System.currentTimeMillis()+".png";
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try{
+			ImageIO.write(image, "png", baos);
+		}catch (IOException e) {
+			e.printStackTrace(log.getPrintWriter());
+			log.getPrintWriter().flush();
+		}
+		InputStream is = new ByteArrayInputStream(baos.toByteArray());
+		HDFSHelper mHelper = new HDFSHelper(dir);
+		boolean isOk = mHelper.upload(is, fileName);
+		log.log(tag , "isSaved Success: "+isOk);
+		return dir+File.separator+fileName;
+	}
+
+	
 }

@@ -45,5 +45,9 @@ Video Grab:
 
 {"url":"rtmp://live.hkstv.hk.lxdns.com/live/hks","dir":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages","cmd":"quit"}
 
+{"url":"/home/hadoop/VideoGrab/testVideo.avi","dir":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages","cmd":"add"}
+
+{"url":"/home/hadoop/VideoGrab/testVideo.avi","dir":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages","cmd":"quit"}
+
 查询测试命令：
 {"url":"url for test, name=624505710-00389-1483152380897-4.png ","hash":"39090762157757"}

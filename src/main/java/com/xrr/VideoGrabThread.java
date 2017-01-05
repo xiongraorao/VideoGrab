@@ -11,12 +11,15 @@ import com.persist.util.helper.HDFSHelper;
 import com.persist.util.helper.ImageHelper;
 import com.persist.util.tool.grab.IVideoNotifier;
 import com.persist.util.tool.grab.VideoNotifierImpl;
+import com.xrr.bean.DetectObjectsInfo;
 import com.xrr.bean.ObjectFeature;
+import com.xrr.test.ObjectDetectPython;
 
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.errors.InvalidTimestampException;
 import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_objdetect.DetectionBasedTracker;
 import org.bytedeco.javacv.*;
 import javax.imageio.ImageIO;
 
@@ -343,17 +346,44 @@ public class VideoGrabThread extends Thread{
                     bi.getGraphics().drawImage(mImageConverter.getBufferedImage(frame), 0, 0, oldW, oldH, null);
 //                    bi = ImageHelper.resize(bi, mWidth, mHeight);
                     bi = BufferedImageHelper.resize(bi, mWidth, mHeight);
+
+                    //save bufferedImage to temp_img
+                    String bi_url = BufferedImageHelper.saveBufImg(bi,"buff-img-save","/home/hadoop/VideoGrab/temp_image",mLogger);
+
+                    //detect objects
+                    ObjectDetectPython.setLogger(mLogger);
+                    String detectResults = ObjectDetectPython.detect("/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/feature_extractor",
+                            "feature_extractor","detect", bi_url);
+                    mLogger.log("system-var: ",System.getProperty("jpy.config"));
+                    String[] results = detectResults.split("/");
+                    
+                    Rectangle[] rects = new Rectangle[results.length+1];//include the origin image
+                    rects[0] = new Rectangle(0, 0, mWidth, mHeight);
+                    
+                    DetectObjectsInfo doi = new DetectObjectsInfo();
+                    Gson gson_result = new Gson();
+                    for(int i = 0; i < results.length; i++) {
+                    	doi = gson_result.fromJson(results[i], DetectObjectsInfo.class);
+                    	if(doi !=null)
+                    		mLogger.log("doi", "doi is not null!");
+                    	mLogger.log("show doi:", doi.category + doi.score + doi.location + doi.hash);
+                    	String[] location = doi.location.split(",");
+                    	rects[i+1] = new Rectangle(Integer.parseInt(location[0]),Integer.parseInt(location[1]),
+                    			Integer.parseInt(location[2])-Integer.parseInt(location[0]),
+                    			Integer.parseInt(location[3])-Integer.parseInt(location[1]));
+                    }
+                    
                     
                     //segement test, segement the center 100*100 pixel image
                     //bi=BufferedImageHelper.segmentTest(bi, "png", mWidth/4, mHeight/4, mWidth/2, mHeight/2);
                     //if there are 4 blocks in this image
-                    // get 4 rects info
-                    Rectangle[] rects = new Rectangle[5];
-                    rects[0] = new Rectangle(0, 0, mWidth, mHeight);//origin image
-                    rects[1] = new Rectangle(0, 0, mWidth/2, mHeight/2);
-                    rects[2] = new Rectangle(mWidth/2, 0, mWidth/2, mHeight/2);
-                    rects[3] = new Rectangle(0, mHeight/2, mWidth/2, mHeight/2);
-                    rects[4] = new Rectangle(mWidth/2, mHeight/2, mWidth/2, mHeight/2);
+//                    // get 4 rects info
+//                    Rectangle[] rects = new Rectangle[5];
+//                    rects[0] = new Rectangle(0, 0, mWidth, mHeight);//origin image
+//                    rects[1] = new Rectangle(0, 0, mWidth/2, mHeight/2);
+//                    rects[2] = new Rectangle(mWidth/2, 0, mWidth/2, mHeight/2);
+//                    rects[3] = new Rectangle(0, mHeight/2, mWidth/2, mHeight/2);
+//                    rects[4] = new Rectangle(mWidth/2, mHeight/2, mWidth/2, mHeight/2);
                     
                     bis = new BufferedImage[rects.length];
                     bis = BufferedImageHelper.segmentTest(bi, "png", rects);
@@ -387,7 +417,7 @@ public class VideoGrabThread extends Thread{
                         //send message to kafka
                         objFea.url = mDir+File.separator+fileName;
                         objFea.video_id = mUrl;
-                        objFea.hash = objFea.mHashCode()+"";
+                        objFea.hash = doi.hash;
                         objFea.time = time+"";
                         objFea.parent_img = mDir+File.separator+String.format(mFormat, mCount, time, 0);
                         if(mProducer != null)

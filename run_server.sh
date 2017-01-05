@@ -6,15 +6,15 @@ set -x
 if [[ $1 == "-vg" ]]
 then
 	echo "start VideoGrabTopology named" $2
-	storm jar VideoGrab.jar com.xrr.VideoGrab videograb_config.json $2
+	storm jar /home/hadoop/VideoGrab/VideoGrab.jar com.xrr.VideoGrab videograb_config.json $2
 elif [[ $1 == "-sf" ]]
 then
 	echo "start SaveFeatureTopology named" $2
-	storm jar VideoGrab.jar com.xrr.FeatureSave feature_save_config.json $2
+	storm jar /home/hadoop/VideoGrab/VideoGrab.jar com.xrr.FeatureSave feature_save_config.json $2
 elif [[ $1 == "-s" ]]
 then
 	echo "start SearchTopology named" $2
-	storm jar VideoGrab.jar com.xrr.Search search_config.json $2
+	storm jar /home/hadoop/VideoGrab/VideoGrab.jar com.xrr.Search search_config.json $2
 elif [[ $1 == "-create" ]]
 then
 	echo "create kafka Topic named" $2
@@ -39,8 +39,17 @@ elif [[ $1 == '-ul' ]]
 then
 	echo "upload file to server"
 	scp /home/ubuntu/workspace/VideoGrab/*.json hadoop@zk02:/home/hadoop/VideoGrab
+	scp /home/ubuntu/workspace/VideoGrab/help.txt hadoop@zk02:/home/hadoop/VideoGrab
 	scp /home/ubuntu/workspace/VideoGrab/run_server.sh hadoop@zk02:/home/hadoop/VideoGrab
-	scp /home/ubuntu/workspace/VideoGrab/target/ever-1.0-SNAPSHOT.jar hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar
+	#scp /home/ubuntu/workspace/VideoGrab/target/ever-1.0-SNAPSHOT.jar hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar
+	scp /home/ubuntu/workspace/VideoGrab/classes/artifacts/ever_jar/ever.jar hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar
+elif [[ $1 == '-dl' ]]
+then
+	echo "download file frome server"
+	scp hadoop@zk02:/home/hadoop/VideoGrab /home/ubuntu/workspace/VideoGrab/*.json
+	scp hadoop@zk02:/home/hadoop/VideoGrab /home/ubuntu/workspace/VideoGrab/help.txt
+	scp hadoop@zk02:/home/hadoop/VideoGrab /home/ubuntu/workspace/VideoGrab/run_server.sh
+	scp hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar /home/ubuntu/workspace/VideoGrab/target/ever-1.0-SNAPSHOT.jar
 else
 	echo "Usage:"
 	echo "-vg topology_name"
@@ -57,5 +66,9 @@ else
 	echo "	delete kafkatopic"
 	echo "-list"
 	echo "	view all kafka topics"
+	echo "-ul"
+	echo "	upload files to server"
+	echo "-dl"
+	echo "	download files from server"
 fi
 
