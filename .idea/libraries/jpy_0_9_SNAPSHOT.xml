@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jpy-0.9-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jpy-0.9-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

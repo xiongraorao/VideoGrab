@@ -33,6 +33,8 @@ public class ObjectDetectPython {
             log.log("ObjectDetect: ", "start init object detection...");
             PyLib.startPython(path);
             log.log("is Running: ",PyLib.isPythonRunning()+"");
+            //just for test
+            //ObjectDetectPython.module =(PyModule) ObjectDetectPython.module.extendSysPath(path,true);
             ObjectDetectPython.module = PyModule.importModule(module);
             ObjectDetectPython.detect = detect;
         }catch (Exception e){

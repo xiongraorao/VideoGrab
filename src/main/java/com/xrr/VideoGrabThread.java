@@ -350,7 +350,7 @@ public class VideoGrabThread extends Thread{
                     //detect objects
                     ObjectDetectPython.setLogger(mLogger);
                     String detectResults = ObjectDetectPython.detect("/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/feature_extractor/",
-                            "demo4","demo4", bi_url);
+                            "feature_extractor","detect", bi_url);
                     mLogger.log("system-var: ",System.getProperty("jpy.config"));
 
                     String[] results = detectResults.split("/");
@@ -810,34 +810,26 @@ public class VideoGrabThread extends Thread{
     public static void main(String[] args)
     {
 
-//        String jpyConfig = "/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties";
-//        System.setProperty("jpy.config", jpyConfig);
-//
-//        //System.setProperty("java.libaryPath" ,":/etc/local/jpy:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib");
-//        //System.setProperty("java.ext.dirs" , "")
-//
-//        FileLogger logger33 = new FileLogger("/home/hadoop/VideoGrab/logs/ChildeGrabThread");
-//        ObjectDetectPython.setLogger(logger33);
-//        System.getProperties().list(logger33.getPrintWriter());
-//        logger33.getPrintWriter().flush();
-//
-//        //System.setProperty("java.library.path",":/etc/local/jpy:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib");
-//        //logger33.log("java.libaryPath: == ",System.getProperty("java.library.path"));
-//        //logger33.log("java.ext.dirs:== " , System.getProperty("java.ext.dirs"));
-//        String detectResults = ObjectDetectPython.detect("/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/feature_extractor/",
-//                "feature_extractor","detect", "/home/hadoop/VideoGrab/images/dog-1.jpg");
-//
-//        logger33.log("detectResult: ",detectResults);
-//
-//        logger33.close();
-
-        //just for test
         String jpyConfig = "/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties";
         System.setProperty("jpy.config", jpyConfig);
+
+        //System.setProperty("java.libaryPath" ,":/etc/local/jpy:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib");
+        //System.setProperty("java.ext.dirs" , "")
+
         FileLogger logger33 = new FileLogger("/home/hadoop/VideoGrab/logs/ChildeGrabThread");
         ObjectDetectPython.setLogger(logger33);
+        System.getProperties().list(logger33.getPrintWriter());
+        logger33.getPrintWriter().flush();
+
+        //System.setProperty("java.library.path",":/etc/local/jpy:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib");
+        //logger33.log("java.libaryPath: == ",System.getProperty("java.library.path"));
+        //logger33.log("java.ext.dirs:== " , System.getProperty("java.ext.dirs"));
         String detectResults = ObjectDetectPython.detect("/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/feature_extractor/",
-                "demo3","detect", "/home/hadoop/VideoGrab/images/dog-1.jpg");
+                "feature_extractor","detect", "/home/hadoop/VideoGrab/images/dog-1.jpg");
+
+        logger33.log("detectResult: ",detectResults);
+
+        logger33.close();
 
 
         if(args.length < 7)
