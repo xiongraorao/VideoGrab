@@ -31,9 +31,8 @@ public class ObjectDetectPython {
             return;
         try{
             log.log("ObjectDetect: ", "start init object detection...");
-            String jpyConfig = "/home/hadoop/storm-projects/python-lib/jpyconfig.properties";
-            System.setProperty("jpy.config", jpyConfig);
             PyLib.startPython(path);
+            log.log("is Running: ",PyLib.isPythonRunning()+"");
             ObjectDetectPython.module = PyModule.importModule(module);
             ObjectDetectPython.detect = detect;
         }catch (Exception e){
@@ -46,6 +45,7 @@ public class ObjectDetectPython {
     public static String detect(String pythonStartPath,String moduleName, String methodName, String filepath)
     {
         log.log("ObjectDetect: ","start detect");
+        log.log("args: ",pythonStartPath + " " + moduleName + " " + methodName + " " + filepath );
         if(ObjectDetectPython.module == null){
             ObjectDetectPython.init(pythonStartPath,moduleName,methodName);
         }

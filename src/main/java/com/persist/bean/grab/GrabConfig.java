@@ -19,7 +19,7 @@ public class GrabConfig {
     //the max child process num to grab pictures from video
     public int grabLimit = 60;
     //the command of the grab frames with executable process)
-    public String cmd = "storm jar $STORM_HOME/Video.jar com.persist.GrabThread ";
+    public String cmd = "java -Djava.ext.dirs=$STORM_HOME/lib  -cp /home/hadoop/VideoGrab/VideoGrab.jar com.xrr.VideoGrabThread ";
 
     //split multi zk with ','
     public String zks = "zk01:2181,zk02:2181,zk03:2181/kafka";
