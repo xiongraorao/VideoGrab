@@ -4,7 +4,7 @@
 "grabBoltParallel": 1,
 "grabLimit": 3,
 "cmd_old2": "java -Djava.ext.dirs=$STORM_HOME/lib  -cp /home/hadoop/VideoGrab/VideoGrab.jar com.xrr.VideoGrabThread ",
-"cmd": "java -Djava.ext.dirs=$STORM_HOME/lib:/home/hadoop/cloud/jdk1.8.0_92/jre/lib/ext:/usr/java/packages/lib/ext -Djava.library.path=:/etc/local/jpy:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib  -cp /home/hadoop/VideoGrab/VideoGrab.jar com.xrr.VideoGrabThread ",
+"cmd": "java -Djava.ext.dirs=$STORM_HOME/lib  -cp /home/hadoop/VideoGrab/VideoGrab.jar com.xrr.VideoGrabThread ",
 "cmd_old": "storm jar target/ever-1.0-SNAPSHOT.jar com.xrr.VideoGrabThread ",
 "zks": "zk01:2181,zk02:2181,zk03:2181/kafka",
 "zks_old": "127.0.0.1:2181",
@@ -21,6 +21,6 @@
 "nameFormat": "frame-%05d-%d.png",
 "log": "video_log",
 "workerNum":1,
-"frameRate":0.2,
+"frameRate":0.1,
 "logDir":"/home/hadoop/VideoGrab/logs"
 }

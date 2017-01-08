@@ -14,16 +14,40 @@ public class ObjectFeature implements Serializable{
     //the url of the video which the picture is grabbed from
     public String video_id;
     //hash code as the test feature
-    public String hash;
+
     public String time;
     public String parent_img;//which image is this object-image from
+
+    //object detect attributes in python dictionary output
+    public String category;
+    public String score;
+    public String hash;
+    public String location;
+    public String feature;
+    public String dir;
+    public String fileName;
     
     public ObjectFeature()
     {
 
     }
 
-    public ObjectFeature(String url, String video_id, String parent_img,String hash,String time)
+    public ObjectFeature(String url, String video_id, String time, String parent_img, String category,
+                         String score, String hash, String location, String feature, String dir, String fileName) {
+        this.url = url;
+        this.video_id = video_id;
+        this.time = time;
+        this.parent_img = parent_img;
+        this.category = category;
+        this.score = score;
+        this.hash = hash;
+        this.location = location;
+        this.feature = feature;
+        this.dir = dir;
+        this.fileName = fileName;
+    }
+
+    public ObjectFeature(String url, String video_id, String parent_img, String hash, String time)
     {
         this.url = url;
         this.video_id = video_id;

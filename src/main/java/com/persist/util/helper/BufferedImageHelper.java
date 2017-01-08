@@ -1,29 +1,13 @@
 package com.persist.util.helper;
 
+import javax.crypto.spec.RC2ParameterSpec;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.awt.Rectangle;
+import java.io.*;
 
-import com.xrr.test.ObjectDetectPython;
-import org.jpy.PyLib;
-import org.jpy.PyModule;
-import org.jpy.PyObject;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-
-import java.awt.image.*;
 /**
  * Created by taozhiheng on 16-10-20.
  *
@@ -141,13 +125,35 @@ public class BufferedImageHelper {
     	}
     	return buffs;
     }
+
+    public static BufferedImage[] segmentTest(String imageUrl,String imageSuffix, Rectangle[] rects){
+        BufferedImage[] buffs = new BufferedImage[rects.length];
+        try {
+            BufferedImage buffImg = ImageIO.read(new File(imageUrl));
+            buffs = segmentTest(buffImg,imageSuffix,rects);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return buffs;
+    }
+
+    public static BufferedImage segmentTest(String imageUrl, String imageSuffix, Rectangle rect){
+        try {
+            BufferedImage bi = ImageIO.read(new File(imageUrl));
+            bi = segmentTest(bi, imageSuffix, rect);
+            return bi;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static BufferedImage segmentTest(BufferedImage image,String imageSuffix){
     	return image;
     }
 
-	public static String saveBufImg(BufferedImage image,String tag, String dir,
+	public static boolean saveBufImg(BufferedImage image, String fileName, HDFSHelper helper,
 									  FileLogger log){
-    	String fileName = System.currentTimeMillis()+".png";
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try{
 			ImageIO.write(image, "png", baos);
@@ -156,11 +162,27 @@ public class BufferedImageHelper {
 			log.getPrintWriter().flush();
 		}
 		InputStream is = new ByteArrayInputStream(baos.toByteArray());
-		HDFSHelper mHelper = new HDFSHelper(dir);
-		boolean isOk = mHelper.upload(is, fileName);
-		log.log(tag , "isSaved Success: "+isOk);
-		return dir+File.separator+fileName;
-	}
+		boolean isOk = helper.upload(is, fileName);
+		if(isOk)
+		    log.log("save-buff-img: " , fileName + "  saved success!");
+		else
+            log.log("save-buff-img: " , fileName + "  saved fail!");
+		return isOk;
+    }
+
+    public static boolean saveBufImg(BufferedImage[] images, String fileName, HDFSHelper helper,
+                                     FileLogger log){
+	    int count = 0;
+	    for (int i = 0; i < images.length; i++){
+	        saveBufImg(images[i], fileName, helper, log);
+	        count ++;
+        }
+        if(count == images.length)
+            return true;
+        else
+            return false;
+    }
+
 
 	
 }

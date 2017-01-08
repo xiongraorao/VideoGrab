@@ -12,9 +12,10 @@ import java.io.Serializable;
 public class FeatureSaveConfig implements Serializable{
 	
 	public String logDir = "/home/hadoop/VideoGrab/logs";
-	public int urlSpoutParallel = 2;
-	public int parseBoltParallel = 2;
+	public int urlSpoutParallel = 1;
+	public int parseBoltParallel = 1;
 	public int saveFeatureBoltParallel = 2;
+	public int featureExtractBoltParallel = 3;
 	
 	public String zks = "localhost:2181";
 	public String topic = "sendImageTopic";
@@ -27,12 +28,14 @@ public class FeatureSaveConfig implements Serializable{
 	
 	public String hbaseQuorum = "localhost";
 	public int hbasePort = 2181;
-	public String hbaseTable = "imageUrl";
+	public String hbaseTable_url = "imageUrl";
 	public String hbaseTable_hash = "imageHash";
-	public String hbaseColumnFamily = "url";
-	public String hbaseColumnFamily_hash = "hash";
-	public String[] hbaseColumns = {"video_id","parent_img","hash","time"};
-	public String[] hbaseColumns_hash = {"url"};
+	public String[] hbaseColumnFamilies_url = {"url","feature"};
+	//public String hbaseColumnFamily_feature = "feature";//save detected features , such hash, catagory ,score...
+	public String[] hbaseColumnFamilies_hash = {"hash"};
+	public String[][] hbaseColumns_url = {{"video_id", "parent_img"},{"hash", "feature", "catagory", "score", "location"}};
+	//public String[] hbaseColumns_feature = {"hash", "feature", "catagory", "score", "location"};
+	public String[][] hbaseColumns_hash = {{"url"}};
 	
 	public FeatureSaveConfig(){
 		

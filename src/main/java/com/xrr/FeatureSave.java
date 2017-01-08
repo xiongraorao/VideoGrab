@@ -11,6 +11,8 @@ import com.persist.bean.grab.GrabConfig;
 import com.persist.util.helper.FileHelper;
 import com.persist.util.helper.Logger;
 import com.xrr.bean.FeatureSaveConfig;
+import com.xrr.bean.ObjectFeature;
+import com.xrr.bolts.save.FeatureExtractBolt;
 import com.xrr.bolts.save.ParseBolt;
 import com.xrr.bolts.save.SaveFeatureBolt;
 import com.xrr.util.ISaveFeature;
@@ -41,11 +43,15 @@ public class FeatureSave {
 
     private final static String URL_SPOUT = "url-spout";
     private final static String PARSE_BOLT = "parse-bolt";
+    private final static String EXTRACT_BOLT = "feature-extract-bolt";
     private final static String SAVE_BOLT = "save-bolt";
 
 
-	public static void main(String[] args) throws Exception{ 
-        
+	public static void main(String[] args) throws Exception{
+
+        String jpyConfig = "/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties";
+        System.setProperty("jpy.config", jpyConfig);
+
         String configPath = "videograb_config.json";
         if(args.length > 0)
             configPath = args[0];
@@ -81,19 +87,24 @@ public class FeatureSave {
         spoutConfig.zkServers = Arrays.asList(baseConfig.zkServers);
         spoutConfig.zkPort = baseConfig.zkPort;
         spoutConfig.forceFromStart = false;
-        
+
+        //save url columnFamily
         ISaveFeature is = new SaveFeatureImpl(baseConfig.hbaseQuorum, baseConfig.hbasePort, 
-        		baseConfig.hbaseTable, baseConfig.hbaseColumnFamily, baseConfig.hbaseColumns);
+        		baseConfig.hbaseTable_url, baseConfig.hbaseColumnFamilies_url, baseConfig.hbaseColumns_url);
+        //save feature columnFamily
+        //ISaveFeature is_feature = new SaveFeatureImpl(baseConfig.hbaseQuorum, baseConfig.hbasePort,
+        //        baseConfig.hbaseTable_url, baseConfig.hbaseColumnFamily_feature, baseConfig.hbaseColumns_feature);
         //save hash-url for fast selection
         ISaveFeature is2 = new SaveFeatureImpl(baseConfig.hbaseQuorum, baseConfig.hbasePort, 
-        		baseConfig.hbaseTable_hash, baseConfig.hbaseColumnFamily_hash, baseConfig.hbaseColumns_hash);
+        		baseConfig.hbaseTable_hash, baseConfig.hbaseColumnFamilies_hash, baseConfig.hbaseColumns_hash);
         
         //construct topology builder
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout(URL_SPOUT, new KafkaSpout(spoutConfig),baseConfig.urlSpoutParallel);
         builder.setBolt(PARSE_BOLT,new ParseBolt(baseConfig.logDir),baseConfig.parseBoltParallel).shuffleGrouping(URL_SPOUT);
-        builder.setBolt(SAVE_BOLT, new SaveFeatureBolt(is, is2, baseConfig.logDir),baseConfig.saveFeatureBoltParallel)
-        .fieldsGrouping(PARSE_BOLT, new Fields("url"));
+        builder.setBolt(EXTRACT_BOLT, new FeatureExtractBolt(baseConfig.logDir),baseConfig.featureExtractBoltParallel).shuffleGrouping(PARSE_BOLT);
+        builder.setBolt(SAVE_BOLT, new SaveFeatureBolt(is, is2,baseConfig.logDir),baseConfig.saveFeatureBoltParallel)
+        .fieldsGrouping(EXTRACT_BOLT, new Fields("url"));
         
         //submit topology
         Config conf = new Config();

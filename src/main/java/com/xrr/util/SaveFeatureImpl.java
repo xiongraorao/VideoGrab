@@ -5,7 +5,7 @@ import com.persist.util.helper.HBaseHelper;
 import com.xrr.bean.ObjectFeature;
 
 /**
- * create by raora 2016/12/22
+ * create by raorao 2016/12/22
  * @author ubuntu
  *
  */
@@ -16,16 +16,16 @@ public class SaveFeatureImpl implements ISaveFeature{
     private int port;
     
     private String tableName;
-    private String columnFamily;
-    private String[] columns;
+    private String[] columnFamilies;
+    private String[][] columns;
     private String tag;
 	
     public SaveFeatureImpl(String quorum, int port,
-    		String tableName, String columnFamily, String[] columns){
+    		String tableName, String columnFamilies[], String[][] columns){
     	this.quorum = quorum;
     	this.port =port;
     	this.tableName = tableName;
-    	this.columnFamily = columnFamily;
+    	this.columnFamilies = columnFamilies;
     	this.columns = columns;
     }
        
@@ -35,7 +35,7 @@ public class SaveFeatureImpl implements ISaveFeature{
             return;
         mHelper = new HBaseHelper(quorum, port);
         try {
-            mHelper.createTable(tableName, new String[]{columnFamily});
+            mHelper.createTable(tableName, columnFamilies);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,30 +67,41 @@ public class SaveFeatureImpl implements ISaveFeature{
 	public boolean save(ObjectFeature obj) {
 		// TODO Auto-generated method stub
 		boolean status = false;
+		String[][] values = {{obj.video_id,obj.parent_img},{obj.hash,obj.feature,obj.category,obj.score+"",obj.location}};
         if(mHelper != null)
         {
+
             try {
-                mHelper.addRow(tableName, obj.url, columnFamily,columns,
-                        new String[]{obj.video_id,obj.parent_img,obj.hash,obj.time});
+                for(int i = 0 ;i < columnFamilies.length; i++){
+                    mHelper.addRow(tableName, obj.url, columnFamilies[i],columns[i],
+                            values[i]);
+                }
+
                 status = true;
                 mLogger.log(tag, "add row success!");
             } catch (Exception e) {
-                e.printStackTrace();
+                e.printStackTrace(mLogger.getPrintWriter());
+                mLogger.getPrintWriter().flush();
                 mLogger.log(tag, "add row exception!");
             }
         }
 		
 		return status;
 	}
+
+
 	
 	public boolean save2(ObjectFeature obj) {
 		// TODO Auto-generated method stub
 		boolean status = false;
+		String[][] values = {{obj.url}};
         if(mHelper != null)
         {
             try {
-                mHelper.addRow(tableName, obj.hash, columnFamily,columns,
-                        new String[]{obj.url});
+                for(int i = 0 ; i < columnFamilies.length; i++){
+                    mHelper.addRow(tableName, obj.hash, columnFamilies[i],columns[i], values[i]);
+                }
+
                 status = true;
                 mLogger.log(tag, "add row success!");
             } catch (Exception e) {
@@ -101,4 +112,5 @@ public class SaveFeatureImpl implements ISaveFeature{
 		
 		return status;
 	}
+
 }

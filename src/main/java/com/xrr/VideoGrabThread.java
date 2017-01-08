@@ -1,17 +1,17 @@
 package com.xrr;
 
 import com.google.gson.Gson;
+import com.persist.bean.analysis.PictureKey;
 import com.persist.bean.grab.GrabConfig;
 import com.persist.bean.grab.VideoInfo;
 import com.persist.kafka.KafkaNewProducer;
 import com.persist.util.helper.BufferedImageHelper;
 import com.persist.util.helper.FileLogger;
 import com.persist.util.helper.HDFSHelper;
+import com.persist.util.helper.ImageHelper;
 import com.persist.util.tool.grab.IVideoNotifier;
 import com.persist.util.tool.grab.VideoNotifierImpl;
-import com.xrr.bean.DetectObjectsInfo;
 import com.xrr.bean.ObjectFeature;
-import com.xrr.test.ObjectDetectPython;
 
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -65,8 +65,8 @@ public class VideoGrabThread extends Thread{
 
     private String mFormat = "picture-%05d-%d.png";
     private String mParentImgFormat;
-    private int mWidth = 227;
-    private int mHeight = 227;
+    private int mWidth = 800;
+    private int mHeight = 600;
     //grab rate
     private double mGrabRate = 1.0;
 
@@ -338,113 +338,56 @@ public class VideoGrabThread extends Thread{
                     //resize image
                     oldW = image.width();
                     oldH = image.height();
-                    
+
                     bi = new BufferedImage(oldW, oldH, BufferedImage.TYPE_3BYTE_BGR);
                     bi.getGraphics().drawImage(mImageConverter.getBufferedImage(frame), 0, 0, oldW, oldH, null);
-//                    bi = ImageHelper.resize(bi, mWidth, mHeight);
                     bi = BufferedImageHelper.resize(bi, mWidth, mHeight);
 
-                    //save bufferedImage to temp_img
-                    String bi_url = BufferedImageHelper.saveBufImg(bi,"buff-img-save","/home/hadoop/VideoGrab/temp_image",mLogger);
+                    time = System.currentTimeMillis();
+                    fileName = String.format(mFormat, mCount, time, 0);
+                    res = BufferedImageHelper.saveBufImg(bi,fileName,mHelper,mLogger);
 
-                    //detect objects
-                    ObjectDetectPython.setLogger(mLogger);
-                    String detectResults = ObjectDetectPython.detect("/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/feature_extractor/",
-                            "feature_extractor","detect", bi_url);
-                    mLogger.log("system-var: ",System.getProperty("jpy.config"));
+                    mNotifier.notify("write frame " + mCount+" to "+fileName+", "+res);
+                    mLogger.log(mUrl, "write frame " + mCount+" to "+fileName+", "+res);
 
-                    String[] results = detectResults.split("/");
-                    
-                    Rectangle[] rects = new Rectangle[results.length+1];//include the origin image
-                    rects[0] = new Rectangle(0, 0, mWidth, mHeight);
-                    
-                    DetectObjectsInfo doi = new DetectObjectsInfo();
-                    Gson gson_result = new Gson();
-                    for(int i = 0; i < results.length; i++) {
-                    	doi = gson_result.fromJson(results[i], DetectObjectsInfo.class);
-                    	if(doi !=null)
-                    		mLogger.log("doi", "doi is not null!");
-                    	mLogger.log("show doi:", doi.category + doi.score + doi.location + doi.hash);
-                    	String[] location = doi.location.split(",");
-                    	rects[i+1] = new Rectangle(Integer.parseInt(location[0]),Integer.parseInt(location[1]),
-                    			Integer.parseInt(location[2])-Integer.parseInt(location[0]),
-                    			Integer.parseInt(location[3])-Integer.parseInt(location[1]));
-                    }
-                    
-                    
-                    //segement test, segement the center 100*100 pixel image
-                    //bi=BufferedImageHelper.segmentTest(bi, "png", mWidth/4, mHeight/4, mWidth/2, mHeight/2);
-                    //if there are 4 blocks in this image
-//                    // get 4 rects info
-//                    Rectangle[] rects = new Rectangle[5];
-//                    rects[0] = new Rectangle(0, 0, mWidth, mHeight);//origin image
-//                    rects[1] = new Rectangle(0, 0, mWidth/2, mHeight/2);
-//                    rects[2] = new Rectangle(mWidth/2, 0, mWidth/2, mHeight/2);
-//                    rects[3] = new Rectangle(0, mHeight/2, mWidth/2, mHeight/2);
-//                    rects[4] = new Rectangle(mWidth/2, mHeight/2, mWidth/2, mHeight/2);
-                    
-                    bis = new BufferedImage[rects.length];
-                    bis = BufferedImageHelper.segmentTest(bi, "png", rects);
-                    for(int i= 0;i < rects.length; i++){
-                    	mLogger.log(mUrl, "size: "+rects[i].getWidth()+"*"+rects[i].getHeight());
-                        //write image to byte array output stream
-                        baos = new ByteArrayOutputStream();
-                        
+                    //send message to kafka
+                    objFea.url = mDir+File.separator+fileName;
+                    objFea.fileName = fileName;
+                    objFea.dir = mDir;
+                    objFea.video_id = mUrl;
+                    objFea.hash = "no data";
+                    objFea.time = time+"";
+                    objFea.parent_img = mDir+File.separator+String.format(mFormat, mCount, time, 0);
+                    objFea.feature = "no data";
+                    objFea.category = "no data";
+                    objFea.score = "no data";
+                    objFea.location = "no data";
+                    if(mProducer != null)
+                    {
+                        String msg = mGson.toJson(objFea);
+                        //Note:
+                        //the process may be blocked even dead when kafka Error happened such as:
+                        //org.apache.kafka.common.errors.InvalidTimestampException:
+                        //The timestamp of the message is out of acceptable range.
+                        //(The Exception will be displayed in mCallback, I know neither the reason nor how to fix it!!!)
+
                         try {
-//                            baos = new FileOutputStream(mDir+File.separator+String.format(mFormat, mCount, System.currentTimeMillis()));
-                            ImageIO.write(bis[i], "png", baos);
-                        } catch (IOException e) {
-                            e.printStackTrace(mLogger.getPrintWriter());
-                            mLogger.getPrintWriter().flush();
+                            mProducer.send(mTopic, msg, mCallback);
+                            mLogger.log(mTopic, "send kafka msg:" + msg);
                         }
-                        //write data in byte array output stream to hdfs
-                        InputStream is = new ByteArrayInputStream(baos.toByteArray());
-                        time = System.currentTimeMillis();
-                        fileName = String.format(mFormat, mCount, time, i);
-                        res = mHelper.upload(is, fileName);
-                        try {
-                            baos.close();
-                            baos = null;
-                        } catch (IOException e) {
-                            e.printStackTrace(mLogger.getPrintWriter());
-                            mLogger.getPrintWriter().flush();
-                        }
-                        mNotifier.notify("write frame " + mCount+" to "+fileName+", "+res);
-                        mLogger.log(mUrl, "write frame " + mCount+" to "+fileName+", "+res);
-                        
-                        //send message to kafka
-                        objFea.url = mDir+File.separator+fileName;
-                        objFea.video_id = mUrl;
-                        objFea.hash = doi.hash;
-                        objFea.time = time+"";
-                        objFea.parent_img = mDir+File.separator+String.format(mFormat, mCount, time, 0);
-                        if(mProducer != null)
+                        catch (InvalidTimestampException e)
                         {
-                            String msg = mGson.toJson(objFea);
-                            //Note:
-                            //the process may be blocked even dead when kafka Error happened such as:
-                            //org.apache.kafka.common.errors.InvalidTimestampException:
-                            //The timestamp of the message is out of acceptable range.
-                            //(The Exception will be displayed in mCallback, I know neither the reason nor how to fix it!!!)
-
-                            try {
-                                mProducer.send(mTopic, msg, mCallback);
-                                mLogger.log(mTopic, "send kafka msg:" + msg);
-                            }
-                            catch (InvalidTimestampException e)
-                            {
-                                mLogger.log(mUrl, "send kafka fail");
-                                e.printStackTrace(mLogger.getPrintWriter());
-                                mLogger.getPrintWriter().flush();
-                            }
+                            mLogger.log(mUrl, "send kafka fail");
+                            e.printStackTrace(mLogger.getPrintWriter());
+                            mLogger.getPrintWriter().flush();
                         }
-                        mCount++;
                     }
-                    
-                    //save the origin grabbed image
-                    mLogger.log(mUrl, "size: "+bi.getWidth()+"*"+bi.getHeight());
-                    
-                    
+                    mCount++;
+
+                //save the origin grabbed image
+                mLogger.log(mUrl, "size: "+bi.getWidth()+"*"+bi.getHeight());
+
+
                 }
                 else
                 {
@@ -652,7 +595,7 @@ public class VideoGrabThread extends Thread{
 
     public int getCount()
     {
-       return mCount;
+        return mCount;
     }
 
     public int getIndex()
@@ -792,9 +735,9 @@ public class VideoGrabThread extends Thread{
      * */
 
     static VideoGrabThread createGrabThread(String url, String dir, IVideoNotifier notifier,
-                                       String topic, String brokerList, FileLogger logger,
-                                       double rate, int failSeconds, long startTimeout, long grabTimeout,
-                                       long restartTimeout, MessageListener listener, ScheduledExecutorService service)
+                                            String topic, String brokerList, FileLogger logger,
+                                            double rate, int failSeconds, long startTimeout, long grabTimeout,
+                                            long restartTimeout, MessageListener listener, ScheduledExecutorService service)
     {
         VideoGrabThread grabThread = new VideoGrabThread(url, dir, notifier, topic, brokerList, logger);
         grabThread.setGrabRate(rate);
@@ -810,28 +753,6 @@ public class VideoGrabThread extends Thread{
     public static void main(String[] args)
     {
 
-        String jpyConfig = "/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties";
-        System.setProperty("jpy.config", jpyConfig);
-
-        //System.setProperty("java.libaryPath" ,":/etc/local/jpy:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib");
-        //System.setProperty("java.ext.dirs" , "")
-
-        FileLogger logger33 = new FileLogger("/home/hadoop/VideoGrab/logs/ChildeGrabThread");
-        ObjectDetectPython.setLogger(logger33);
-        System.getProperties().list(logger33.getPrintWriter());
-        logger33.getPrintWriter().flush();
-
-        //System.setProperty("java.library.path",":/etc/local/jpy:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib");
-        //logger33.log("java.libaryPath: == ",System.getProperty("java.library.path"));
-        //logger33.log("java.ext.dirs:== " , System.getProperty("java.ext.dirs"));
-        String detectResults = ObjectDetectPython.detect("/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/feature_extractor/",
-                "feature_extractor","detect", "/home/hadoop/VideoGrab/images/dog-1.jpg");
-
-        logger33.log("detectResult: ",detectResults);
-
-        logger33.close();
-
-
         if(args.length < 7)
             throw new RuntimeException("the main method of GrabThread need at lease 7 arguments");
         String host = args[0];
@@ -841,7 +762,7 @@ public class VideoGrabThread extends Thread{
         final String dir = args[4];
         final String topic = args[5];
         final String brokerList = args[6];
-        
+
         String name = ManagementFactory.getRuntimeMXBean().getName();
         final String pid = name.split("@")[0];
         final FileLogger logger = new FileLogger(GrabConfig.getLogDir()+File.separator+"GrabThread@"+pid);
@@ -1019,7 +940,7 @@ public class VideoGrabThread extends Thread{
                     } else if (msg.equals(VideoInfo.PAUSE)) {
                         t.pauseGrab();// stop grab thread , related to start
                     } else if (msg.equals(VideoInfo.CONTINUE)) {
-                        t.continueGrab();// (re)start grab thread from stopped status 
+                        t.continueGrab();// (re)start grab thread from stopped status
                     }
                 }
             }

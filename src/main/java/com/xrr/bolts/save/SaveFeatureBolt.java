@@ -1,12 +1,21 @@
 package com.xrr.bolts.save;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
+
+import clojure.lang.Obj;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import com.persist.bean.grab.VideoInfo;
 import com.persist.util.helper.FileLogger;
 import com.persist.util.helper.HDFSHelper;
+import com.persist.util.helper.BufferedImageHelper;
+import com.xrr.bean.DetectObjectsInfo;
 import com.xrr.bean.ObjectFeature;
+import com.xrr.test.ObjectDetectPython;
 import com.xrr.util.ISaveFeature;
 
 import backtype.storm.task.OutputCollector;
@@ -34,12 +43,12 @@ public class SaveFeatureBolt extends BaseRichBolt{
     private long count = 0;
     private long count2 = 0;
     
-    public SaveFeatureBolt(ISaveFeature sf,ISaveFeature sf2, String logDir){
+    public SaveFeatureBolt(ISaveFeature sf, ISaveFeature sf2, String logDir){
     	mSaver = sf;
     	mSaver2 = sf2;
     	this.logDir = logDir;
     }
-	
+
 	public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
 		// TODO Auto-generated method stub
 		mCollector = collector;
@@ -55,29 +64,56 @@ public class SaveFeatureBolt extends BaseRichBolt{
 	public void execute(Tuple tuple) {
 		// TODO Auto-generated method stub
         ObjectFeature objFea = (ObjectFeature) tuple.getValue(1);
-        if(objFea == null)
-            return;
+		ObjectFeature[] objFeas = (ObjectFeature[]) tuple.getValue(2);
+        if(objFea == null || objFeas == null)
+		{
+			mLogger.log(TAG+"@"+id,"can not receive data from FeatureExtractBolt, return");
+			return;
+		}
+
         String tag = null;
-        String tag2 = null;
         if(objFea.url !=null){
         	tag = objFea.url;
-        	tag2 = objFea.hash;
         }
-        mLogger.log(TAG+"@"+id, "prepare to save: "+tag+" to Hbase");
+		//objFea do not save to imgHash table for it has null hash value
+        mLogger.log(TAG+"@"+id, "prepare to save: "+tag+" to urlTable");
         boolean status = mSaver.save(objFea);
-        mLogger.log(TAG+"@"+id, "saved: "+tag+", status = "+status);
+		mLogger.log(TAG+"@"+id, "saved: "+tag+", save urlTable= "+status );
         if(status){
         	count++;
-        	mLogger.log(TAG+"@"+id, ", saved to urlTable records total = "+count);
+        	mLogger.log(TAG+"@"+id, ", saved origin image to urlTable records total = "+count);
         }
-        mLogger.log(TAG+"@"+id, "prepare to save: "+tag2+" to Hbase");
-        boolean status2 = mSaver2.save2(objFea);
-        mLogger.log(TAG+"@"+id, "saved: "+tag2+", status = "+status2);
-        //show record total numbers every 10 records
-        if(status2){
-        	count2++;
-        	mLogger.log(TAG+"@"+id, ", saved to hashTable records total = "+count2);
-        }
+
+        //save objFeas to hbase
+		for( int i = 0; i < objFeas.length; i ++){
+			mLogger.log(TAG+"@"+id, "prepare to save: "+objFeas[i].url+" to urlTable");
+
+//			//test objFeas is null or not!
+//			for(int j = 0 ;j < objFeas.length ; j++){
+//					mLogger.log(" ======ojbFeas array content test:  ",objFeas[j].parent_img + " " +
+//							objFeas[j].video_id+" "+objFeas[j].hash+" "+objFeas[j].feature+" "+
+//							objFeas[j].category+ " "+ objFeas[j].score+ " "+objFeas[j].location);
+//				}
+
+			boolean status2 = mSaver.save(objFeas[i]);
+			mLogger.log(TAG+"@"+id, "saved: "+objFeas[i].url+", save urlTable= "+status2 );
+			if(status2 && count%10 == 0){
+				count++;
+				mLogger.log(TAG+"@"+id, ", saved subImage to urlTable records total = "+count);
+			}
+
+			//save objFeas to hash-url table
+			mLogger.log(TAG+"@"+id, "prepare to save: "+objFeas[i].hash+" to hashTable");
+			boolean status3 = mSaver2.save2(objFeas[i]);
+			mLogger.log(TAG+"@"+id, "saved: "+objFeas[i].hash+", status = "+status3);
+			//show record total numbers every 10 records
+			if(status3 && count2%10 == 0){
+				count2++;
+				mLogger.log(TAG+"@"+id, ", saved subImage to hashTable records total = "+count2);
+			}
+
+		}
+
         mCollector.ack(tuple);
 	}
 

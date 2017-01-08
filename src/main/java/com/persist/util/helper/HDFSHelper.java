@@ -110,6 +110,7 @@ public class HDFSHelper implements Serializable{
         }
     }
 
+
     /**
      * download file from remote hdfs systemt to local file
      * @param local the local file path
