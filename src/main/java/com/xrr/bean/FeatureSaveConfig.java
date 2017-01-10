@@ -36,7 +36,10 @@ public class FeatureSaveConfig implements Serializable{
 	public String[][] hbaseColumns_url = {{"video_id", "parent_img"},{"hash", "feature", "catagory", "score", "location"}};
 	//public String[] hbaseColumns_feature = {"hash", "feature", "catagory", "score", "location"};
 	public String[][] hbaseColumns_hash = {{"url"}};
-	
+	public String jpyConfig = "/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties";
+	public String pythonStartPath = "/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/";
+	public String pythonModuleName = "extract";
+	public String pythonMethodName = "detect";
 	public FeatureSaveConfig(){
 		
 	}

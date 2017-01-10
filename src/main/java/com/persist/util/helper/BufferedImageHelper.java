@@ -79,42 +79,32 @@ public class BufferedImageHelper {
      */
     public static BufferedImage segmentTest(BufferedImage image,String imageSuffix, 
     		int x, int y, int width, int height){
-//    	int src_width=image.getWidth();
-//    	int src_height=image.getHeight();
-    	//WritableRaster wr=new WritableRaster();
-    	//PixelGrabber pg=new PixelGrabber(image, width/4, height/4, width/2, height/2, true);
-    	
-//    	BufferedImage bi=new BufferedImage(width/2, height/2, image.getType());
-//    	Graphics g=bi.getGraphics();
-//    	g.drawImage(image, 0, 0, width/2, height/2, Color.LIGHT_GRAY, null);
-//    	g.dispose();
-//    	return bi;
-    	
-//    	try{
-//        	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//    		ImageIO.write(image,imageSuffix,baos);
-//    		InputStream is = new ByteArrayInputStream(baos.toByteArray());  
-//    		
-//    		ImageReader reader = ImageIO.getImageReadersBySuffix(imageSuffix).next();
-//    		ImageInputStream iis = ImageIO.createImageInputStream(is);
-//    		reader.setInput(iis,true);
-//        	ImageReadParam param = reader.getDefaultReadParam();
-//        	Rectangle rect = new Rectangle(x,y,width,height);
-//        	param.setSourceRegion(rect);
-//        	output = reader.read(0,param);
-//        	
-//    	}catch(IOException e){
-//    		e.printStackTrace();
-//    	}
-    	return image.getSubimage(x, y, width, height);
+
+        //if the 'x' or 'y' is negative, then set it to zero
+        //is the coordinate out of boundary?
+        int xx = x;
+        int yy = y;
+        int ww = width;
+        int hh = height;
+        if( x < 0 )
+            xx = 0;
+        if(y < 0 )
+            yy = 0;
+        if(ww > image.getWidth())
+            ww = image.getWidth();
+        if(hh > image.getHeight())
+            hh = image.getHeight();
+
+    	return image.getSubimage(xx, yy, ww, hh);
     	
     }
     public static BufferedImage segmentTest(BufferedImage image,String imageSuffix, 
     		Rectangle rect){
-    	int x = (int) rect.getX();
-    	int y = (int) rect.getY();
-    	int width = (int) rect.getWidth();
-    	int height = (int) rect.getHeight();
+    	int x = rect.x;
+    	int y = rect.y;
+    	int width = rect.width;
+    	int height = rect.height;
+
     	return BufferedImageHelper.segmentTest(image, imageSuffix, x, y, width, height);
     }
     public static BufferedImage[] segmentTest(BufferedImage image,String imageSuffix, 

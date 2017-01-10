@@ -49,9 +49,5 @@ Video Grab:
 
 {"url":"/home/hadoop/VideoGrab/testVideo.avi","dir":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages","cmd":"quit"}
 
-查询测试命令：
-{"url":"url for test, name=624505710-00389-1483152380897-4.png ","hash":"39090762157757"}
 
-检测测试命令：
-{"url":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages/1498320990-00000-1483848676225-0.png","video_id":"/home/hadoop/VideoGrab/testVideo.avi","time":"1483848676225","parent_img":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages/1498320990-00000-1483848676225-0.png","category":"no data","score":"no data","hash":"no data","location":"no data","feature":"no data","dir":"/home/hadoop/VideoGrab/images","fileName":"dog-1.jpg"}
 

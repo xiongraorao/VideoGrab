@@ -49,8 +49,8 @@ public class FeatureSave {
 
 	public static void main(String[] args) throws Exception{
 
-        String jpyConfig = "/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties";
-        System.setProperty("jpy.config", jpyConfig);
+        //String jpyConfig = "/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties";
+        //System.setProperty("jpy.config", jpyConfig);
 
         String configPath = "videograb_config.json";
         if(args.length > 0)
@@ -91,9 +91,6 @@ public class FeatureSave {
         //save url columnFamily
         ISaveFeature is = new SaveFeatureImpl(baseConfig.hbaseQuorum, baseConfig.hbasePort, 
         		baseConfig.hbaseTable_url, baseConfig.hbaseColumnFamilies_url, baseConfig.hbaseColumns_url);
-        //save feature columnFamily
-        //ISaveFeature is_feature = new SaveFeatureImpl(baseConfig.hbaseQuorum, baseConfig.hbasePort,
-        //        baseConfig.hbaseTable_url, baseConfig.hbaseColumnFamily_feature, baseConfig.hbaseColumns_feature);
         //save hash-url for fast selection
         ISaveFeature is2 = new SaveFeatureImpl(baseConfig.hbaseQuorum, baseConfig.hbasePort, 
         		baseConfig.hbaseTable_hash, baseConfig.hbaseColumnFamilies_hash, baseConfig.hbaseColumns_hash);
@@ -108,6 +105,10 @@ public class FeatureSave {
         
         //submit topology
         Config conf = new Config();
+        conf.put("jpyConfig",baseConfig.jpyConfig);
+        conf.put("pythonStartPath",baseConfig.pythonStartPath);
+        conf.put("pythonModuleName",baseConfig.pythonModuleName);
+        conf.put("pythonMethodName",baseConfig.pythonMethodName);
         if (args.length > 1) {
             conf.setNumWorkers(baseConfig.workerNum);
             conf.setDebug(false);

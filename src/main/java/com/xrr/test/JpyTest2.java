@@ -15,8 +15,8 @@ public class JpyTest2 {
         mLogger.log("java.ext.dirs:== " , System.getProperty("java.ext.dirs"));
         mLogger.getPrintWriter().flush();
         ObjectDetectPython.setLogger(mLogger);
-        String result = ObjectDetectPython.detect("/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/feature_extractor/",
-        "feature_extractor","detect",args[0]);
+        String result = ObjectDetectPython.detect("/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/",
+        "extract","detect",args[0]);
 
         //mLogger.log("result: ", result);
         mLogger.close();

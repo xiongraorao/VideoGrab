@@ -45,11 +45,15 @@ then
 	scp /home/ubuntu/workspace/VideoGrab/classes/artifacts/ever_jar/ever.jar hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar
 elif [[ $1 == '-dl' ]]
 then
-	echo "download file frome server"
-	scp hadoop@zk02:/home/hadoop/VideoGrab /home/ubuntu/workspace/VideoGrab/*.json
-	scp hadoop@zk02:/home/hadoop/VideoGrab /home/ubuntu/workspace/VideoGrab/help.txt
-	scp hadoop@zk02:/home/hadoop/VideoGrab /home/ubuntu/workspace/VideoGrab/run_server.sh
+	echo "download file from server"
+	scp hadoop@zk02:/home/hadoop/VideoGrab/*.json /home/ubuntu/workspace/VideoGrab
+	scp hadoop@zk02:/home/hadoop/VideoGrab/help.txt /home/ubuntu/workspace/VideoGrab
+	scp hadoop@zk02:/home/hadoop/VideoGrab/run_server.sh /home/ubuntu/workspace/VideoGrab/run_server.sh
 	scp hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar /home/ubuntu/workspace/VideoGrab/target/ever-1.0-SNAPSHOT.jar
+elif [[ $1 == '-dlog' ]]
+then
+	echo "download log file from server"
+	scp hadoop@zk02:/home/hadoop/VideoGrab/logs/* /home/ubuntu/workspace/VideoGrab/logs
 else
 	echo "Usage:"
 	echo "-vg topology_name"

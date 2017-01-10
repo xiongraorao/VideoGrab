@@ -20,5 +20,9 @@
 "hbaseColumnFamilies_hash":["hash"],
 "hbaseColumns_url":[["video_id","parent_img"],["hash", "feature", "catagory", "score", "location"]],
 "hbaseColumns_hash":[["url"]],
-"logDir":"/home/hadoop/VideoGrab/logs"
+"logDir":"/home/hadoop/VideoGrab/logs",
+"jpyConfig":"/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties",
+  "pythonStartPath":"/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/",
+  "pythonModuleName":"extract",
+  "pythonMethodName":"detect"
 }
