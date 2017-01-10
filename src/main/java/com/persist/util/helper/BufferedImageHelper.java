@@ -1,6 +1,5 @@
 package com.persist.util.helper;
 
-import javax.crypto.spec.RC2ParameterSpec;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -77,7 +76,7 @@ public class BufferedImageHelper {
     /**
      * segment the central 1/4 pixels 
      */
-    public static BufferedImage segmentTest(BufferedImage image,String imageSuffix, 
+    public static BufferedImage segmentTest(BufferedImage image,
     		int x, int y, int width, int height){
 
         //if the 'x' or 'y' is negative, then set it to zero
@@ -90,56 +89,52 @@ public class BufferedImageHelper {
             xx = 0;
         if(y < 0 )
             yy = 0;
-        if(ww > image.getWidth())
+        if(ww > image.getWidth()-xx)
             ww = image.getWidth();
-        if(hh > image.getHeight())
+        if(hh > image.getHeight()-yy)
             hh = image.getHeight();
 
     	return image.getSubimage(xx, yy, ww, hh);
     	
     }
-    public static BufferedImage segmentTest(BufferedImage image,String imageSuffix, 
+    public static BufferedImage segmentTest(BufferedImage image,
     		Rectangle rect){
     	int x = rect.x;
     	int y = rect.y;
     	int width = rect.width;
     	int height = rect.height;
 
-    	return BufferedImageHelper.segmentTest(image, imageSuffix, x, y, width, height);
+    	return BufferedImageHelper.segmentTest(image, x, y, width, height);
     }
-    public static BufferedImage[] segmentTest(BufferedImage image,String imageSuffix, 
+    public static BufferedImage[] segmentTest(BufferedImage image,
     		Rectangle[] rects){
     	BufferedImage[] buffs = new BufferedImage[rects.length];
     	for(int i=0;i<rects.length;i++){
-    		buffs[i] = segmentTest(image,imageSuffix,rects[i]);
+    		buffs[i] = segmentTest(image,rects[i]);
     	}
     	return buffs;
     }
 
-    public static BufferedImage[] segmentTest(String imageUrl,String imageSuffix, Rectangle[] rects){
+    public static BufferedImage[] segmentTest(String imageUrl, Rectangle[] rects){
         BufferedImage[] buffs = new BufferedImage[rects.length];
         try {
             BufferedImage buffImg = ImageIO.read(new File(imageUrl));
-            buffs = segmentTest(buffImg,imageSuffix,rects);
+            buffs = segmentTest(buffImg,rects);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return buffs;
     }
 
-    public static BufferedImage segmentTest(String imageUrl, String imageSuffix, Rectangle rect){
+    public static BufferedImage segmentTest(String imageUrl, Rectangle rect){
         try {
             BufferedImage bi = ImageIO.read(new File(imageUrl));
-            bi = segmentTest(bi, imageSuffix, rect);
+            bi = segmentTest(bi, rect);
             return bi;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static BufferedImage segmentTest(BufferedImage image,String imageSuffix){
-    	return image;
     }
 
 	public static boolean saveBufImg(BufferedImage image, String fileName, HDFSHelper helper,

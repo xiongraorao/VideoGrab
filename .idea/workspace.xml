@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9f498a9d-c3d6-45ef-97e7-c5daf5491d35" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/feature_save_config.json" afterPath="$PROJECT_DIR$/feature_save_config.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/persist/util/helper/BufferedImageHelper.java" afterPath="$PROJECT_DIR$/src/main/java/com/persist/util/helper/BufferedImageHelper.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,8 +26,18 @@
       <file leaf-file-name="FeatureSave.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/xrr/FeatureSave.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="491">
+            <state relative-caret-position="617">
               <caret line="110" column="65" lean-forward="false" selection-start-line="110" selection-start-column="65" selection-end-line="110" selection-end-column="65" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="feature_save_config.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/feature_save_config.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="4" column="30" lean-forward="false" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -41,11 +53,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BufferedImageHelper.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ObjectDetectPython.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/xrr/test/ObjectDetectPython.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="164">
+              <caret line="33" column="29" lean-forward="false" selection-start-line="33" selection-start-column="12" selection-end-line="33" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FeatureExtractBolt.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/xrr/bolts/save/FeatureExtractBolt.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="680">
+              <caret line="99" column="55" lean-forward="true" selection-start-line="99" selection-start-column="55" selection-end-line="99" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BufferedImageHelper.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/persist/util/helper/BufferedImageHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="471">
-              <caret line="97" column="49" lean-forward="true" selection-start-line="97" selection-start-column="49" selection-end-line="97" selection-end-column="49" />
+            <state relative-caret-position="801">
+              <caret line="109" column="31" lean-forward="true" selection-start-line="109" selection-start-column="31" selection-end-line="109" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -93,7 +125,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/xrr/test/ObjectDetectPython2.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/persist/bean/grab/GrabConfig.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/xrr/test/JpyTestInThread.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/xrr/test/ObjectDetectPython.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/xrr/test/JpyTestInStorm.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/xrr/VideoGrabThread2.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/persist/util/helper/HDFSHelper.java" />
@@ -109,11 +140,12 @@
         <option value="$PROJECT_DIR$/help.txt" />
         <option value="$PROJECT_DIR$/videograb_config.json" />
         <option value="$PROJECT_DIR$/src/main/java/com/xrr/test/JpyTest2.java" />
-        <option value="$PROJECT_DIR$/feature_save_config.json" />
         <option value="$PROJECT_DIR$/src/main/java/com/xrr/bean/FeatureSaveConfig.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/xrr/FeatureSave.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/xrr/bolts/save/FeatureExtractBolt.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/persist/util/helper/BufferedImageHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/xrr/bolts/save/FeatureExtractBolt.java" />
+        <option value="$PROJECT_DIR$/feature_save_config.json" />
+        <option value="$PROJECT_DIR$/src/main/java/com/xrr/test/ObjectDetectPython.java" />
       </list>
     </option>
   </component>
@@ -340,6 +372,78 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ever" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="VideoGrab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="xrr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bolts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ever" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="VideoGrab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="xrr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bolts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="save" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -977,7 +1081,7 @@
       <workItem from="1483750978201" duration="13900000" />
       <workItem from="1483834623943" duration="23743000" />
       <workItem from="1483923767406" duration="6941000" />
-      <workItem from="1484042639505" duration="5105000" />
+      <workItem from="1484042639505" duration="7231000" />
     </task>
     <task id="LOCAL-00001" summary="add object detect algorithm ,but exist some problems when run in VideoGrabThread.">
       <created>1483618646633</created>
@@ -1014,11 +1118,18 @@
       <option name="project" value="LOCAL" />
       <updated>1484047879430</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="完成了图片对象检测，截取，特征提取和储存功能">
+      <created>1484047883762</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1484047883762</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="117195000" />
+    <option name="totallyTimeSpent" value="119321000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1022" extended-state="6" />
@@ -1170,30 +1281,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/xrr/bolts/save/FeatureExtractBolt.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1394">
-          <caret line="175" column="67" lean-forward="true" selection-start-line="175" selection-start-column="67" selection-end-line="175" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/xrr/test/ObjectDetectPython.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-160">
-          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/feature_save_config.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="26" column="19" lean-forward="false" selection-start-line="26" selection-start-column="3" selection-end-line="26" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/xrr/test/JpyTest2.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
@@ -1213,6 +1300,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/persist/util/helper/BufferedImageHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="801">
+          <caret line="109" column="31" lean-forward="true" selection-start-line="109" selection-start-column="31" selection-end-line="109" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/xrr/bean/FeatureSaveConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="617">
@@ -1223,16 +1318,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/xrr/FeatureSave.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
+        <state relative-caret-position="617">
           <caret line="110" column="65" lean-forward="false" selection-start-line="110" selection-start-column="65" selection-end-line="110" selection-end-column="65" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/persist/util/helper/BufferedImageHelper.java">
+    <entry file="file://$PROJECT_DIR$/feature_save_config.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="97" column="49" lean-forward="true" selection-start-line="97" selection-start-column="49" selection-end-line="97" selection-end-column="49" />
+        <state relative-caret-position="84">
+          <caret line="4" column="30" lean-forward="false" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/xrr/bolts/save/FeatureExtractBolt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="99" column="55" lean-forward="true" selection-start-line="99" selection-start-column="55" selection-end-line="99" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/xrr/test/ObjectDetectPython.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="33" column="29" lean-forward="false" selection-start-line="33" selection-start-column="12" selection-end-line="33" selection-end-column="29" />
           <folding />
         </state>
       </provider>
