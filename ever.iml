@@ -12,6 +12,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="jpy-0.9-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.apache.storm:storm-core:0.9.6" level="project" />
     <orderEntry type="library" name="Maven: org.clojure:clojure:1.5.1" level="project" />
     <orderEntry type="library" name="Maven: clj-time:clj-time:0.4.1" level="project" />
@@ -118,7 +119,7 @@
     <orderEntry type="module-library">
       <library name="Maven: jdk.tools:jdk.tools:1.8">
         <CLASSES>
-          <root url="jar:///opt/software/jdk1.8.0_92/lib/tools.jar!/" />
+          <root url="jar:///usr/local/jdk1.8.0_92/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -163,6 +164,5 @@
     <orderEntry type="library" name="Maven: xml-apis:xml-apis:1.3.04" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.leveldbjni:leveldbjni-all:1.8" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.7" level="project" />
-    <orderEntry type="library" name="jpy-0.9-SNAPSHOT" level="project" />
   </component>
 </module>

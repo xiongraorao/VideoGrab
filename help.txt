@@ -49,5 +49,7 @@ Video Grab:
 
 {"url":"/home/hadoop/VideoGrab/testVideo.avi","dir":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages","cmd":"quit"}
 
+{"url":"/home/hadoop/VideoGrab/dogvideo.mp4","dir":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages","cmd":"add"}
 
+{"url":"/home/hadoop/VideoGrab/dogvideo.mp4","dir":"hdfs://192.168.1.1:9000/user/hadoop/grabbedImages","cmd":"quit"}
 
