@@ -18,7 +18,7 @@ public class FeatureSaveConfig implements Serializable{
 	public int featureExtractBoltParallel = 3;
 	
 	public String zks = "localhost:2181";
-	public String topic = "sendImageTopic";
+	public String topic = "topic-video-save2";
 	public String zkRoot = "/opt/zookeeper_data/data";
 	public String id = "feature-save";
 	public String[] zkServers={"localhost"};
@@ -39,7 +39,8 @@ public class FeatureSaveConfig implements Serializable{
 	public String jpyConfig = "/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties";
 	public String pythonStartPath = "/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/";
 	public String pythonModuleName = "extract";
-	public String pythonMethodName = "detect";
+	public String pythonMethodName = "detect2";
+	public int batchSize = 10;
 	public FeatureSaveConfig(){
 		
 	}

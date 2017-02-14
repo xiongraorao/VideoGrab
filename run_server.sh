@@ -38,22 +38,22 @@ then
 elif [[ $1 == '-ul' ]]
 then
 	echo "upload file to server"
-	scp /home/ubuntu/workspace/VideoGrab/*.json hadoop@zk02:/home/hadoop/VideoGrab
-	scp /home/ubuntu/workspace/VideoGrab/help.txt hadoop@zk02:/home/hadoop/VideoGrab
-	scp /home/ubuntu/workspace/VideoGrab/run_server.sh hadoop@zk02:/home/hadoop/VideoGrab
-	#scp /home/ubuntu/workspace/VideoGrab/target/ever-1.0-SNAPSHOT.jar hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar
-	scp /home/ubuntu/workspace/VideoGrab/classes/artifacts/ever_jar/ever.jar hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar
+	scp /home/raorao/workspace/VideoGrab/*.json hadoop@zk02:/home/hadoop/VideoGrab
+	scp /home/raorao/workspace/VideoGrab/help.txt hadoop@zk02:/home/hadoop/VideoGrab
+	scp /home/raorao/workspace/VideoGrab/run_server.sh hadoop@zk02:/home/hadoop/VideoGrab
+	#scp /home/raorao/workspace/VideoGrab/target/ever-1.0-SNAPSHOT.jar hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar
+	scp /home/raorao/workspace/VideoGrab/classes/artifacts/ever_jar/ever.jar hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar
 elif [[ $1 == '-dl' ]]
 then
 	echo "download file from server"
-	scp hadoop@zk02:/home/hadoop/VideoGrab/*.json /home/ubuntu/workspace/VideoGrab
-	scp hadoop@zk02:/home/hadoop/VideoGrab/help.txt /home/ubuntu/workspace/VideoGrab
-	scp hadoop@zk02:/home/hadoop/VideoGrab/run_server.sh /home/ubuntu/workspace/VideoGrab/run_server.sh
-	scp hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar /home/ubuntu/workspace/VideoGrab/target/ever-1.0-SNAPSHOT.jar
+	scp hadoop@zk02:/home/hadoop/VideoGrab/*.json /home/raorao/workspace/VideoGrab
+	scp hadoop@zk02:/home/hadoop/VideoGrab/help.txt /home/raorao/workspace/VideoGrab
+	scp hadoop@zk02:/home/hadoop/VideoGrab/run_server.sh /home/raorao/workspace/VideoGrab/run_server.sh
+	scp hadoop@zk02:/home/hadoop/VideoGrab/VideoGrab.jar /home/raorao/workspace/VideoGrab/target/ever-1.0-SNAPSHOT.jar
 elif [[ $1 == '-dlog' ]]
 then
 	echo "download log file from server"
-	scp hadoop@zk02:/home/hadoop/VideoGrab/logs/* /home/ubuntu/workspace/VideoGrab/logs
+	scp hadoop@zk02:/home/hadoop/VideoGrab/logs/* /home/raorao/workspace/VideoGrab/logs
 else
 	echo "Usage:"
 	echo "-vg topology_name"

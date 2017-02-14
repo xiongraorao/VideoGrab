@@ -12,7 +12,7 @@
 "zkRoot": "/home/hadoop/VideoGrab/zkRoot",
 "id": "video-grab",
 "brokerList": "zk01:9092,zk02:9092,zk03:9092",
- "sendTopic": "topic-video-save",
+ "sendTopic": "topic-video-save2",
 "zkServers": ["zk01","zk02","zk03"],
 "zkPort": 2181,
 "redisHost": "develop.finalshares.com",
@@ -21,6 +21,6 @@
 "nameFormat": "frame-%05d-%d.png",
 "log": "video_log",
 "workerNum":1,
-"frameRate":0.1,
+"frameRate":1,
 "logDir":"/home/hadoop/VideoGrab/logs"
 }

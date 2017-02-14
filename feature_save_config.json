@@ -1,10 +1,10 @@
 {
 "urlSpoutParallel":1,
 "parseBoltParallel":1,
-"saveFeatureBoltParallel":1,
+"saveFeatureBoltParallel":3,
 "featureExtractBoltParallel":1,
 "zks": "zk01:2181,zk02:2181,zk03:2181/kafka",
-"topic":"topic-video-save",
+"topic":"topic-video-save2",
 "zkRoot": "/home/hadoop/VideoGrab/zkRoot",
 "id":"feature-save",
 "zkServers": ["zk01","zk02","zk03"],
@@ -24,5 +24,6 @@
 "jpyConfig":"/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties",
   "pythonStartPath":"/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/",
   "pythonModuleName":"extract",
-  "pythonMethodName":"detect"
+  "pythonMethodName":"detect2",
+  "batchSize":10
 }

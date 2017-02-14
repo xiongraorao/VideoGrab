@@ -14,7 +14,7 @@ public class DetectObjectsInfo implements Serializable{
 	public double score;
 	public String hash;
 	public String location;
-	public String feature;
+	public double[] feature;
 	public DetectObjectsInfo(){
 		
 	}

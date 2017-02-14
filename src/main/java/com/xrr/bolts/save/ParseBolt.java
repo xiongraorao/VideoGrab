@@ -70,6 +70,7 @@ public class ParseBolt extends BaseRichBolt{
             e.printStackTrace(mLogger.getPrintWriter());
             mLogger.getPrintWriter().flush();
             e.printStackTrace();
+            mCollector.fail(tuple);
         }
         finally
         {

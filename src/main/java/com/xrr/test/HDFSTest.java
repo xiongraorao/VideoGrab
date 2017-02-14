@@ -21,10 +21,12 @@ public class HDFSTest {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		HDFSHelper hh=new HDFSHelper("hdfs://localhost:9000/user/hadoop");
-		hh.upload("/home/ubuntu/mbuntu-0.jpg", "1.jpg");
-		hh.close();
-		hh.download("/home/hadoop/mbuntu-0-from-hdfs.jpg", "1.jpg");
+		HDFSHelper hh=new HDFSHelper("hdfs://192.168.1.1:9000/user/hadoop/grabbedImages");
+		hh.upload("/home/hadoop/VideoGrab/images/dog-1.jpg", "dog-1.jpg");
+		hh.upload("/home/hadoop/VideoGrab/images/dog-2.jpg", "dog-2.jpg");
+		hh.upload("/home/hadoop/VideoGrab/images/dog-3.jpg", "dog-3.jpg");
+		hh.upload("/home/hadoop/VideoGrab/images/dog-4.jpg", "dog-4.jpg");
+		hh.upload("/home/hadoop/VideoGrab/images/dog-5.jpg", "dog-5.jpg");
 		hh.close();
 	}
 

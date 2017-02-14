@@ -1,6 +1,7 @@
 package com.xrr.test;
 
 import clojure.lang.Obj;
+import com.google.gson.Gson;
 import com.persist.util.helper.BufferedImageHelper;
 import com.persist.util.helper.FileLogger;
 import com.persist.util.helper.HDFSHelper;
@@ -19,6 +20,7 @@ public class ObjectDetectPython {
 
     private static PyModule module;
     private static String detect = "detect";
+    private static String detect2 = "detect2";
     private static FileLogger log;
 
     public static void setLogger(FileLogger logger){
@@ -32,7 +34,7 @@ public class ObjectDetectPython {
         try{
             log.log("ObjectDetect: ", "start init object detection...");
             PyLib.startPython(path);
-            log.log("is Running: ",PyLib.isPythonRunning()+"");
+            log.log("ObjectDetect: is Running: ",PyLib.isPythonRunning()+"");
             ObjectDetectPython.module = PyModule.importModule(module);
             ObjectDetectPython.detect = detect;
         }catch (Exception e){
@@ -45,15 +47,39 @@ public class ObjectDetectPython {
     public static String detect(String pythonStartPath,String moduleName, String methodName, String filepath)
     {
         log.log("ObjectDetect: ","start detect");
-        log.log("args: ",pythonStartPath + " " + moduleName + " " + methodName + " " + filepath );
+        log.log("ObjectDetect: args: ",pythonStartPath + " " + moduleName + " " + methodName + " " + filepath );
         if(ObjectDetectPython.module == null){
             ObjectDetectPython.init(pythonStartPath,moduleName,methodName);
         }
         PyObject o = ObjectDetectPython.module.callMethod(detect, filepath);
         if (o == null)
             return null;
-        log.log("ObjectDetect: ", "detect-result: " + o.getStringValue());
+        //log.log("ObjectDetect: ", "detect-result: " + o.getStringValue());
+        log.log("ObjectDetect: ", "detect-result: " + true);
         return o.getStringValue();
     }
 
+    public static String detect2(String pythonStartPath,String moduleName, String methodName, String[] files)
+    {
+        log.log("ObjectDetect: ","start detect");
+        log.log("ObjectDetect: "+ "args: ",pythonStartPath + " " + moduleName + " " + methodName + " files counts= " + files.length );
+        if(ObjectDetectPython.module == null){
+            ObjectDetectPython.init(pythonStartPath,moduleName,methodName);
+        }
+        Gson gson = new Gson();
+        String filesList = gson.toJson(files,files.getClass());
+        log.log("ObjectDetect: ","filesList: "+ filesList);
+        long start = System.currentTimeMillis();
+        PyObject o = ObjectDetectPython.module.callMethod(detect2, filesList);
+        long end = System.currentTimeMillis();
+        if (o == null)
+        {
+            log.log("ObjectDetect: ", "return no data");
+            return null;
+        }
+        //log.log("ObjectDetect: ", "detect-result: " + o.getStringValue());
+        log.log("ObjectDetect: ", "detect-result: " + true);
+        log.log("ObjectDetect: ", "detect cost time: " + (end-start));
+        return o.getStringValue();
+    }
 }

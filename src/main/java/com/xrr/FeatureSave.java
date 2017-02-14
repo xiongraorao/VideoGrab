@@ -52,7 +52,7 @@ public class FeatureSave {
         //String jpyConfig = "/home/hadoop/storm-projects/python-lib/lib.linux-x86_64-2.7/jpyconfig.properties";
         //System.setProperty("jpy.config", jpyConfig);
 
-        String configPath = "videograb_config.json";
+        String configPath = "feature_save_config.json";
         if(args.length > 0)
             configPath = args[0];
 
@@ -109,6 +109,7 @@ public class FeatureSave {
         conf.put("pythonStartPath",baseConfig.pythonStartPath);
         conf.put("pythonModuleName",baseConfig.pythonModuleName);
         conf.put("pythonMethodName",baseConfig.pythonMethodName);
+        conf.put("batchSize",baseConfig.batchSize+"");
         if (args.length > 1) {
             conf.setNumWorkers(baseConfig.workerNum);
             conf.setDebug(false);

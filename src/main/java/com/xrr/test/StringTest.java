@@ -23,6 +23,12 @@ public class StringTest {
             }
         }
 
+        double[] test = new double[]{1.4189519882202148,0,8,0,6};
+        StringBuffer sb=new StringBuffer();
+        for(double i:test){
+            sb.append(Double.toString(i));
+        }
+        System.out.println(sb);
 
     }
 }
