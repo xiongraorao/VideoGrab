@@ -82,4 +82,13 @@ public class ObjectDetectPython {
         log.log("ObjectDetect: ", "detect cost time: " + (end-start));
         return o.getStringValue();
     }
+
+    public static void main(String[] args){
+        FileLogger mLogger = new FileLogger("/home/hadoop/VideoGrab/logs/ObjectDetectlog");
+        String[] ss = {"/home/sh/workplace/objectDetection/ssd/caffe/examples/images/bird-1.jpg","/home/sh/workplace/objectDetection/ssd/caffe/examples/images/horse-1.jpg", "/home/sh/workplace/objectDetection/ssd/caffe/examples/images/car-1.jpg"};
+        String result = ObjectDetectPython.detect2("/home/sh/workplace/objectDetection/ssd/caffe/examples/sh_ssd/","extract","detect2",ss);
+        mLogger.log("result",result);
+
+
+    }
 }
